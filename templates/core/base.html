@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Dr Bronstein · Gastro-entérologue à Tahiti{% endblock %}</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="{% block description %}Cabinet de gastro-entérologie, hépatologie et oncologie digestive à Papeete, Tahiti. Dr Jean-Ariel Bronstein. Consultations et endoscopies (coloscopie, gastroscopie).{% endblock %}">
+  <meta name="author" content="Dr Jean-Ariel Bronstein">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  <meta property="og:title" content="{% block og_title %}Dr Bronstein · Gastro-entérologue à Tahiti{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Gastro-entérologue à Tahiti. Prenez rendez-vous pour vos consultations et examens endoscopiques.{% endblock %}">
+  <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}/static/img/dr-bronstein.jpg{% endblock %}">
+
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+  <!-- JSON-LD Structured Data (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Physician",
+    "name": "Dr Jean-Ariel Bronstein",
+    "image": "{{ request.scheme }}://{{ request.get_host }}/static/img/dr-bronstein.jpg",
+    "@id": "{{ request.scheme }}://{{ request.get_host }}",
+    "url": "{{ request.scheme }}://{{ request.get_host }}",
+    "telephone": "+68940814848",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Immeuble Air France, Rue Lagarde, 4ème étage",
+      "addressLocality": "Papeete",
+      "addressRegion": "Tahiti",
+      "postalCode": "98713",
+      "addressCountry": "PF"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": -17.5425,
+      "longitude": -149.5685
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "07:00",
+        "closes": "17:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "08:30",
+        "closes": "12:00"
+      }
+    ],
+    "medicalSpecialty": [
+      "Gastroenterology",
+      "Hepatology",
+      "GastrointestinalOncology"
+    ],
+    "availableService": [
+      { "@type": "MedicalProcedure", "name": "Coloscopie" },
+      { "@type": "MedicalProcedure", "name": "Gastroscopie" },
+      { "@type": "MedicalProcedure", "name": "Échographie abdominale" }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div class="top-actions">
+    <a class="pill" href="tel:+68940814848">📞 Appeler pour RDV</a>
+    <a class="pill" href="mailto:docteur@bronstein.fr">✉️ Envoyer un message</a>
+    <a class="pill" href="https://www.maiia.com/gastro-enterologue-et-hepatologue/98714-papeete/bronstein-jean-ariel" target="_blank" rel="noreferrer">🗓️ Réserver en ligne (Maiia)</a>
+    <a class="pill" href="/guides/#preparation-coloscopie">📄 Préparation coloscopie</a>
+  </div>
+
+  <header class="site-header">
+    <div class="logo">Dr Bronstein</div>
+    <nav class="nav">
+      <a href="/">Accueil</a>
+      <a href="/examens/">Examens</a>
+      <a href="/consultations/">Consultations & endoscopies</a>
+      <a href="/pathologies/">Pathologies</a>
+      <a href="/guides/">Guides</a>
+      <a href="/faq/">FAQ</a>
+      <a href="/blog/">Actualités</a>
+      <a class="nav-cta" href="/prendre-rendez-vous/">Prendre RDV</a>
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div>
+      <h3>Contact</h3>
+      <p>Cabinet : 40 81 48 48 · Vini : 87 37 87 50 · Secrétariat : 87 345 372</p>
+      <p>Email médecin : <a href="mailto:docteur@bronstein.fr">docteur@bronstein.fr</a></p>
+      <p>Email secrétariat : <a href="mailto:secretaire@bronstein.fr">secretaire@bronstein.fr</a></p>
+      <p>Horaires : Lundi-Vendredi 07:00-17:00 · Samedi 08:30-12:00</p>
+    </div>
+    <div>
+      <h3>L'équipe</h3>
+      <p><strong>Dr Jean-Ariel Bronstein</strong> — Professeur agrégé du Val-de-Grâce, Expert près du Tribunal de Grande Instance</p>
+      <p><strong>Tania Mauri</strong> — Secrétaire médicale (accueil, rendez-vous, préparation des examens)</p>
+    </div>
+    <div class="footer-note">© 2025 Dr. Jean-Ariel Bronstein — Clinique Paofai, Papeete</div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ exam.title }} · Examens · Dr Bronstein{% endblock %}
+{% block content %}
+<section class="section narrow">
+  <p class="eyebrow"><strong>Examens</strong></p>
+  <h1>{{ exam.title }}</h1>
+  <p class="lead">{{ exam.description }}</p>
+
+  <div class="cards">
+    <article class="card">
+      <h3>Indications principales</h3>
+      <ul class="muted">
+        {% for item in exam.indications %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </article>
+    {% if exam.duration %}
+    <article class="card">
+      <h3>Durée</h3>
+      <p class="muted">{{ exam.duration }}</p>
+    </article>
+    {% endif %}
+    <article class="card">
+      <h3>Préparation</h3>
+      <p class="muted">{{ exam.preparation }}</p>
+    </article>
+    <article class="card">
+      <h3>Déroulement</h3>
+      <p class="muted">{{ exam.procedure }}</p>
+    </article>
+    <article class="card">
+      <h3>Après l'examen</h3>
+      <p class="muted">{{ exam.aftercare }}</p>
+    </article>
+    {% if exam.risks %}
+    <article class="card">
+      <h3>Risques et effets secondaires</h3>
+      <ul class="muted">
+        {% for risk in exam.risks %}
+          <li>{{ risk }}</li>
+        {% endfor %}
+      </ul>
+    </article>
+    {% endif %}
+    {% if exam.documents %}
+    <article class="card">
+      <h3>Documents utiles</h3>
+      <ul class="muted">
+        {% for doc in exam.documents %}
+          <li><a class="link" href="{{ doc.url }}" target="_blank" rel="noreferrer">{{ doc.label }}</a></li>
+        {% endfor %}
+      </ul>
+    </article>
+    {% endif %}
+  </div>
+
+  <div class="cta-row" style="margin-top:18px;">
+    <a class="btn primary" href="/consultations/">Infos pratiques</a>
+    <a class="btn outline" href="tel:+68940814848">Appeler le cabinet</a>
+    <a class="btn ghost" href="/examens/">Retour aux examens</a>
+  </div>
+</section>
+{% endblock %}

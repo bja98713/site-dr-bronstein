@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ post.title }} · Dr Bronstein{% endblock %}
+{% block content %}
+<article class="section narrow">
+  <p class="muted">{{ post.date }} · {{ post.author }}</p>
+  <h1>{{ post.title }}</h1>
+  <p class="lead">{{ post.excerpt }}</p>
+  <p>{{ post.content }}</p>
+  <div class="meta">
+    <a class="link" href="/blog/">Retour aux actualités</a>
+  </div>
+</article>
+<section class="section">
+  <p class="eyebrow">Autres articles</p>
+  <div class="grid cards">
+    {% for item in posts %}
+      {% if item.slug != post.slug %}
+        <article class="card compact">
+          <h3><a href="/blog/{{ item.slug }}/">{{ item.title }}</a></h3>
+          <p class="muted">{{ item.date }}</p>
+          <p>{{ item.excerpt }}</p>
+        </article>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

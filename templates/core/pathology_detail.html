@@ -1,0 +1,72 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ pathology.title }} · Dr Bronstein{% endblock %}
+{% block content %}
+<article class="section narrow">
+  <p class="eyebrow">Fiche patient</p>
+  <h1>{{ pathology.title }}</h1>
+  <p class="lead">{{ pathology.summary }}</p>
+
+  <div class="card" style="margin:16px 0;">
+    <p class="muted" style="margin:0 0 6px;">Votre interlocuteur</p>
+    <p><strong>Dr Jean-Ariel Bronstein</strong> — docteur@bronstein.fr</p>
+    <p class="muted" style="margin:6px 0 0;">Secrétariat : <a class="link" href="mailto:secretaire@bronstein.fr">secretaire@bronstein.fr</a> · Tél. 40 81 48 48 / 87 345 372</p>
+  </div>
+
+  <h3>Symptômes</h3>
+  <ul>
+    {% for item in pathology.symptoms %}
+      <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Quand consulter en urgence ?</h3>
+  <p>{{ pathology.emergency }}</p>
+
+  <h3>Examens utiles</h3>
+  <ul>
+    {% for item in pathology.exams %}
+      <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Traitements</h3>
+  <ul>
+    {% for item in pathology.treatments %}
+      <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Conseils pratiques</h3>
+  <ul>
+    {% for item in pathology.advice %}
+      <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Prévention / suivi</h3>
+  <ul>
+    {% for item in pathology.prevention %}
+      <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+
+  <div class="meta">
+    <a class="link" href="/pathologies/">Retour aux pathologies</a> ·
+    <a class="link" href="/symptomes/">Index par symptômes</a>
+  </div>
+</article>
+
+<section class="section">
+  <p class="eyebrow">Autres fiches</p>
+  <div class="grid cards">
+    {% for item in pathologies %}
+      {% if item.slug != pathology.slug %}
+        <article class="card compact">
+          <h3><a href="/pathologies/{{ item.slug }}/">{{ item.title }}</a></h3>
+          <p class="muted">{{ item.summary }}</p>
+        </article>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

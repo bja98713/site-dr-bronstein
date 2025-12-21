@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% block title %}Examens et endoscopies · Dr Bronstein{% endblock %}
+{% block content %}
+<section class="section">
+  <p class="eyebrow"><strong>Examens</strong></p>
+  <h1>Consultations, endoscopies et explorations</h1>
+  <p class="lead">Retrouvez les principaux examens réalisés : indications, préparation et déroulement. Contactez le secrétariat pour toute question pratique.</p>
+  <div class="grid cards">
+    {% for exam in exams %}
+      <article class="card">
+        {% if exam.image %}
+          <img src="{{ exam.image }}" alt="{{ exam.title }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 1rem; display: block;">
+        {% endif %}
+        <h3><a href="/examens/{{ exam.slug }}/">{{ exam.title }}</a></h3>
+        <p class="muted">{{ exam.description }}</p>
+        <a class="link" href="/examens/{{ exam.slug }}/">Voir le détail</a>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

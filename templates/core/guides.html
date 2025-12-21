@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+{% block title %}Guides pratiques · Dr Bronstein{% endblock %}
+{% block content %}
+<section class="section">
+  <p class="eyebrow">Préparation</p>
+  <h1>Guides pratiques</h1>
+  <div class="grid cards">
+    {% for guide in guides %}
+      <article class="card" id="{{ guide.slug }}">
+        <h3>{{ guide.title }}</h3>
+        <p class="muted">{{ guide.summary }}</p>
+        {% if guide.steps %}
+          <ul class="muted">
+            {% for step in guide.steps %}
+              <li>{{ step }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        {% if guide.pdf %}
+          <a class="btn ghost" href="{{ guide.pdf }}">Télécharger le PDF</a>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

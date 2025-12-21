@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+{% block title %}FAQ · Dr Bronstein{% endblock %}
+{% block content %}
+<section class="section">
+  <p class="eyebrow">Questions fréquentes</p>
+  <h1>FAQ</h1>
+  <div class="cards">
+    {% for item in faqs %}
+      <article class="card">
+        <h3>{{ item.q }}</h3>
+        <p>{{ item.a }}</p>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

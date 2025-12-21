@@ -1,0 +1,88 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Consultations & endoscopies · Dr Bronstein{% endblock %}
+{% block content %}
+<section class="section">
+  <p class="eyebrow">Pratique</p>
+  <h1>Consultations & endoscopies</h1>
+  <div class="cards">
+    <article class="card">
+      <h3>Consultations</h3>
+      <p class="muted">Immeuble Air France — rue LAGARDE — 4e étage (face à GEMO)</p>
+      <p>Tél : 40 81 48 48 / 87 345 372</p>
+      <a class="link" href="{{ contact.consult.maps }}" target="_blank" rel="noreferrer">Voir sur Google Maps</a>
+    </article>
+    <article class="card">
+      <h3>Hospitalisations & endoscopies</h3>
+      <p class="muted">Clinique PAOFAI — BP 40149 — 98713 Papeete, Tahiti</p>
+      <p>Tél : 40 46 18 18</p>
+      <a class="link" href="{{ contact.hospital.maps }}" target="_blank" rel="noreferrer">Voir sur Google Maps</a>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="equipe">
+  <p class="eyebrow">L'équipe</p>
+  <h2>Votre interlocuteur et l'accueil</h2>
+  <div class="cards">
+    {% for member in team %}
+      <article class="card">
+        <div class="person">
+          <img class="portrait" src="{% static member.photo %}" alt="{{ member.name }}" loading="lazy">
+          <div>
+            <h3>{{ member.name }}</h3>
+            <p class="muted">{{ member.role }}</p>
+            <p>{{ member.focus }}</p>
+            <p class="muted">Contact : <a class="link" href="mailto:{{ member.contact }}">{{ member.contact }}</a></p>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <p class="eyebrow">Arriver préparé</p>
+  <h2>Horaires, parkings, consignes</h2>
+  <div class="cards">
+    <article class="card">
+      <h3>Horaires</h3>
+      <p>{{ contact.hours }}</p>
+    </article>
+    <article class="card">
+      <h3>Parkings</h3>
+      <p>Clinique Paofai : parking sur site. Immeuble Air France : stationnement à proximité (GEMO / front de mer).</p>
+    </article>
+    <article class="card">
+      <h3>Le jour J</h3>
+      <ul class="muted">
+        <li>Arrivez 10-15 minutes en avance.</li>
+        <li>Carte Vitale/assurance, ordonnance, examens récents.</li>
+        <li>Si anesthésie : être accompagné, ne pas conduire ensuite.</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section class="section">
+  <p class="eyebrow">Préparer l'examen</p>
+  <h2>Consignes et documents utiles</h2>
+  <div class="cards">
+    <article class="card">
+      <h3>Coloscopie</h3>
+      <p class="muted">Régime sans résidu, laxatif, hydratation.</p>
+      <a class="link" href="/guides/#preparation-coloscopie">Voir les consignes</a>
+    </article>
+    <article class="card">
+      <h3>Fibroscopie</h3>
+      <p class="muted">Jeûne, anesthésie, reprise alimentaire.</p>
+      <a class="link" href="/guides/#deroulement-fibroscopie">Voir les consignes</a>
+    </article>
+    <article class="card">
+      <h3>Après examen</h3>
+      <p class="muted">Surveillance, alimentation, signes d'alerte.</p>
+      <a class="link" href="/guides/#apres-examen">Voir les consignes</a>
+    </article>
+  </div>
+</section>
+{% endblock %}

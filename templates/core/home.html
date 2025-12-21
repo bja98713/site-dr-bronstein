@@ -1,0 +1,163 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Accueil · Dr Bronstein | Gastro-entérologue à Tahiti{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow"><strong>Gastro-entérologie · Oncologie digestive · Hépatologie · Médecine interne · Tahiti</strong></p>
+    <h1>{{ hero.title }}</h1>
+    <p class="subtitle">{{ hero.subtitle }}</p>
+    <div class="cta-row">
+      <a class="btn primary" href="tel:+68940814848">Appeler le cabinet</a>
+      <a class="btn ghost" href="/prendre-rendez-vous/">Prendre rendez-vous</a>
+      <a class="btn outline" href="https://www.maiia.com/gastro-enterologue-et-hepatologue/98714-papeete/bronstein-jean-ariel" target="_blank" rel="noreferrer">Réserver en ligne (Maiia)</a>
+    </div>
+    <ul class="highlights">
+      <li>Consultations · Échographie · pH-métrie</li>
+      <li>Gastroscopie · Coloscopie · Echo-endoscopie </li>
+    </ul>
+  </div>
+  <div class="hero-card">
+    <h3>Infos pratiques</h3>
+    <p class="muted">Clinique PAOFAI — BP 40149 — 98713 Papeete</p>
+    <p>Tél : 40 46 18 18</p>
+    <p class="muted">Consultations — Immeuble Air France, 4e étage (face à GEMO)</p>
+    <p>Tél : 40 81 48 48 / 87 345 372</p>
+    <a class="link" href="/consultations/">Accéder aux plans et horaires</a>
+  </div>
+</section>
+
+<section class="section" id="parcours">
+  <p class="eyebrow"><strong>Parcours patient</strong></p>
+  <h2>Je viens consulter, que faire ?</h2>
+  <div class="cards">
+    {% for tile in tiles %}
+      <article class="card">
+        <h3>{{ tile.title }}</h3>
+        <p>{{ tile.text }}</p>
+        <a class="btn {{ tile.variant }}" href="{{ tile.link }}">{{ tile.action }}</a>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section" id="equipe">
+  <p class="eyebrow"><strong>L'équipe</strong></p>
+  <h2>À qui allez-vous parler ?</h2>
+  <div class="cards">
+    {% for member in team %}
+      <article class="card">
+        <div class="person">
+          <img class="portrait" src="{% static member.photo %}" alt="{{ member.name }}" loading="lazy">
+          <div>
+        <h3>{{ member.name }}</h3>
+        <p class="muted">{{ member.role }}</p>
+        <p>{{ member.focus }}</p>
+        <p class="muted">Contact : <a class="link" href="mailto:{{ member.contact }}">{{ member.contact }}</a></p>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section" id="specialites">
+  <p class="eyebrow"><strong>Examens</strong></p>
+  <h2>Consultations & endoscopies</h2>
+  <div class="grid">
+    {% for spec in specialties %}
+      <article class="tile">
+        {% if spec.image %}
+          <img src="{{ spec.image }}" alt="{{ spec.title }}" style="width: 100%; height: 150px; object-fit: cover; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 1rem; display: block;">
+        {% endif %}
+        <h3><a href="/examens/{{ spec.slug }}/">{{ spec.title }}</a></h3>
+        <p>{{ spec.description }}</p>
+        <a class="link" href="/examens/{{ spec.slug }}/">Voir le détail</a>
+      </article>
+    {% endfor %}
+  </div>
+  <div class="cta-row" style="margin-top:18px;">
+    <a class="btn primary" href="/consultations/">Infos pratiques</a>
+    <a class="btn outline" href="/guides/">Préparer mon examen</a>
+    <a class="btn ghost" href="/examens/">Tous les examens</a>
+  </div>
+</section>
+
+<section class="section" id="pathologies">
+  <p class="eyebrow"><strong>Pathologies</strong></p>
+  <h2>Symptômes et quand consulter</h2>
+  <div class="grid cards">
+    {% for p in pathologies|slice:':6' %}
+      <article class="card">
+        {% if p.image %}
+          <img src="{{ p.image }}" alt="{{ p.title }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 1rem; display: block;">
+        {% endif %}
+        <h3><a href="/pathologies/{{ p.slug }}/">{{ p.title }}</a></h3>
+        <p class="muted">{{ p.summary }}</p>
+        <a class="link" href="/pathologies/{{ p.slug }}/">Lire la fiche</a>
+      </article>
+    {% endfor %}
+  </div>
+  <div class="cta-row" style="margin-top:12px;">
+    <a class="btn outline" href="/symptomes/">Index par symptômes</a>
+    <a class="btn outline" href="/pathologies/">Toutes les fiches</a>
+  </div>
+</section>
+
+<section class="section" id="guides">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow"><strong>Guides pratiques</strong></p>
+      <h2>Préparer et vivre son examen</h2>
+    </div>
+    <a class="btn outline" href="/guides/">Voir tous les guides</a>
+  </div>
+  <div class="grid cards">
+    {% for guide in guides|slice:':3' %}
+      <article class="card">
+        <h3>{{ guide.title }}</h3>
+        <p class="muted">{{ guide.summary }}</p>
+        <a class="link" href="{{ guide.pdf }}">Télécharger le PDF</a>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow"><strong>FAQ</strong></p>
+      <h2>Questions fréquentes</h2>
+    </div>
+    <a class="btn outline" href="/faq/">Toutes les questions</a>
+  </div>
+  <div class="cards">
+    {% for item in faqs %}
+      <article class="card">
+        <h3>{{ item.q }}</h3>
+        <p>{{ item.a }}</p>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section" id="blog">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow"><strong>Actualités / Conseils</strong></p>
+      <h2>Derniers articles</h2>
+    </div>
+    <a class="btn outline" href="/blog/">Tous les articles</a>
+  </div>
+  <div class="grid cards">
+    {% for post in blog_posts|slice:':3' %}
+      <article class="card">
+        <p class="muted">{{ post.date }} · {{ post.author }}</p>
+        <h3><a href="/blog/{{ post.slug }}/">{{ post.title }}</a></h3>
+        <p>{{ post.excerpt }}</p>
+        <a class="link" href="/blog/{{ post.slug }}/">Lire</a>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

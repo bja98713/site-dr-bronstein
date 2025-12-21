@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Prendre rendez-vous · Dr Bronstein{% endblock %}
+{% block content %}
+<section class="section">
+  <p class="eyebrow">Rendez-vous</p>
+  <h1>Prendre rendez-vous avec le Dr Bronstein</h1>
+  <div class="cards">
+    {% for member in team %}
+      <article class="card">
+        <div class="person">
+          <img class="portrait" src="{% static member.photo %}" alt="{{ member.name }}" loading="lazy">
+          <div>
+            <h3>{{ member.name }}</h3>
+            <p class="muted">{{ member.role }}</p>
+            <p>{{ member.focus }}</p>
+            <p class="muted">Contact : <a class="link" href="mailto:{{ member.contact }}">{{ member.contact }}</a></p>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <p class="eyebrow">Choisir votre mode de contact</p>
+  <h2>Par téléphone, email ou en ligne</h2>
+  <div class="cards">
+    <article class="card">
+      <h3>Par téléphone</h3>
+      <p class="muted">Cabinet : 40 81 48 48 · Vini : 87 37 87 50 · Secrétariat : 87 345 372</p>
+      <a class="btn primary" href="tel:+68940814848">Appeler maintenant</a>
+    </article>
+    <article class="card">
+      <h3>Par message</h3>
+      <p class="muted">Expliquez le motif de consultation et vos disponibilités.</p>
+      <a class="btn ghost" href="mailto:secretaire@bronstein.fr">Envoyer un email</a>
+    </article>
+    <article class="card">
+      <h3>En ligne</h3>
+      <p class="muted">Réservez directement sur Maiia en choisissant votre créneau.</p>
+      <a class="btn primary" href="{{ cta.doctolib }}" target="_blank" rel="noreferrer">Réserver sur Maiia</a>
+    </article>
+  </div>
+</section>
+{% endblock %}
