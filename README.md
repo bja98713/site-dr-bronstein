@@ -35,3 +35,4 @@ Ouvrez http://127.0.0.1:8000/.
 ## Déploiement
 - Définir `DJANGO_SECRET_KEY` et mettre `DEBUG=0`.
 - `python manage.py collectstatic` puis servir via un serveur WSGI derrière un proxy (Nginx, Caddy, ...).
+# site-dr-bronstein
