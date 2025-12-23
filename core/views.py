@@ -1,7 +1,9 @@
 """Site pages for Dr Bronstein."""
 
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import ContactForm
 
 
 EXAMS = [
@@ -530,6 +532,10 @@ PATHOLOGIES = [
 	{
 		"slug": "hepatite-c",
 		"title": "Hépatite C",
+		"date": "10 août 2025",
+		"author": "Jean-Ariel Bronstein",
+		"excerpt": "Infection virale du foie, transmissible par le sang, guérissable aujourd'hui.",
+		"content": "Infection virale du foie, transmissible par le sang, guérissable aujourd'hui.",
 		"image": "/static/img/pathologies/hepatite-c.jpg",
 		"summary": "Infection virale du foie, transmissible par le sang, guérissable aujourd'hui.",
 		"symptoms": ["Asymptomatique le plus souvent", "Fatigue chronique"],
@@ -1064,5 +1070,23 @@ def blog_detail(request, slug):
 		raise Http404 from exc
 
 	return render(request, "core/blog_detail.html", {"post": post, "posts": BLOG_POSTS})
+
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Ici, on pourrait envoyer un email
+            # send_mail(...)
+            messages.success(request, "Votre message a bien été envoyé. Nous vous répondrons dans les meilleurs délais.")
+            return redirect('contact')
+    else:
+        form = ContactForm()
+
+    context = {
+        "form": form,
+        "contact": CONTACT,
+    }
+    return render(request, "core/contact.html", context)
 
 # Create your views here.

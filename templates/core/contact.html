@@ -1,0 +1,61 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Contact · Dr Bronstein{% endblock %}
+
+{% block content %}
+<section class="section narrow">
+  <p class="eyebrow">Nous écrire</p>
+  <h1>Contactez le cabinet</h1>
+  <p class="lead">Pour toute question administrative ou demande de renseignement. Pour les urgences, merci d'appeler le 15 ou de vous rendre aux urgences.</p>
+
+  {% if messages %}
+    <div class="messages" style="margin-bottom: 24px;">
+      {% for message in messages %}
+        <div class="alert {{ message.tags }}" style="padding: 16px; background: #dcfce7; color: #166534; border-radius: 8px; border: 1px solid #bbf7d0;">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="card">
+    <form method="post" action="">
+      {% csrf_token %}
+      
+      <div style="display: grid; gap: 20px;">
+        {% for field in form %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}" style="display: block; margin-bottom: 8px; font-weight: 600;">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+              <div class="error" style="color: #ef4444; font-size: 14px; margin-top: 4px;">
+                {{ field.errors }}
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+        
+        <button type="submit" class="btn primary" style="width: 100%; justify-content: center; margin-top: 10px;">Envoyer le message</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 16px;
+    transition: border-color 0.2s;
+  }
+  .form-control:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+  }
+</style>
+{% endblock %}
