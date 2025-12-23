@@ -2,28 +2,37 @@
 {% load static %}
 {% block title %}Accueil · Dr Bronstein | Gastro-entérologue à Tahiti{% endblock %}
 {% block content %}
-<section class="hero">
-  <div class="hero-text">
-    <p class="eyebrow"><strong>Gastro-entérologie · Oncologie digestive · Hépatologie · Médecine interne · Tahiti</strong></p>
-    <h1>{{ hero.title }}</h1>
-    <p class="subtitle">{{ hero.subtitle }}</p>
-    <div class="cta-row">
-      <a class="btn primary" href="tel:+68940814848">Appeler le cabinet</a>
-      <a class="btn ghost" href="/prendre-rendez-vous/">Prendre rendez-vous</a>
-      <a class="btn outline" href="https://www.maiia.com/gastro-enterologue-et-hepatologue/98714-papeete/bronstein-jean-ariel" target="_blank" rel="noreferrer">Réserver en ligne (Maiia)</a>
+<section class="hero-modern">
+  <div class="hero-content">
+    <div class="hero-badge">Gastro-entérologue à Tahiti</div>
+    <h1>Prenez soin de votre santé digestive</h1>
+    <p class="hero-lead">Le Dr Jean-Ariel Bronstein vous accueille à la Clinique Paofai pour vos consultations et examens endoscopiques.</p>
+    
+    <div class="hero-actions">
+      <a class="btn-modern primary" href="https://www.maiia.com/gastro-enterologue-et-hepatologue/98714-papeete/bronstein-jean-ariel" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        Prendre rendez-vous en ligne
+      </a>
+      <a class="btn-modern secondary" href="tel:+68940814848">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        40 81 48 48
+      </a>
     </div>
-    <ul class="highlights">
-      <li>Consultations · Échographie · pH-métrie</li>
-      <li>Gastroscopie · Coloscopie · Echo-endoscopie </li>
-    </ul>
+
+    <div class="hero-features">
+      <div class="feature">
+        <span class="check">✓</span> Conventionné Secteur 2
+      </div>
+      <div class="feature">
+        <span class="check">✓</span> Tiers Payant
+      </div>
+      <div class="feature">
+        <span class="check">✓</span> Urgences acceptées
+      </div>
+    </div>
   </div>
-  <div class="hero-card">
-    <h3>Infos pratiques</h3>
-    <p class="muted">Clinique PAOFAI — BP 40149 — 98713 Papeete</p>
-    <p>Tél : 40 46 18 18</p>
-    <p class="muted">Consultations — Immeuble Air France, 4e étage (face à GEMO)</p>
-    <p>Tél : 40 81 48 48 / 87 345 372</p>
-    <a class="link" href="/consultations/">Accéder aux plans et horaires</a>
+  <div class="hero-image">
+    <img src="{% static 'img/dr-bronstein.jpg' %}" alt="Dr Jean-Ariel Bronstein" class="doctor-portrait">
   </div>
 </section>
 
