@@ -1,5 +1,4 @@
 import os
-from pypdf import PdfReader
 from django.conf import settings
 from functools import lru_cache
 
@@ -10,6 +9,12 @@ def load_pdf_content():
     Retourne une liste de dictionnaires formatés pour le chatbot.
     Utilise un cache pour ne pas relire les fichiers à chaque requête.
     """
+    try:
+        from pypdf import PdfReader
+    except ImportError:
+        print("Erreur: pypdf n'est pas installé. La fonctionnalité RAG sera désactivée.")
+        return []
+
     rag_dir = os.path.join(settings.BASE_DIR, 'static', 'rag_documents')
     documents = []
 
