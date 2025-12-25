@@ -1089,8 +1089,8 @@ FAQS_EN = [
 FAQS_ES = [
     {"q": "¿Cómo pedir cita?", "a": "Puede pedir cita por teléfono al 40 81 48 48, en Maiia, o a través del formulario de contacto en el sitio web."},
     {"q": "¿Debo estar en ayunas antes de una endoscopia?", "a": "Sí, generalmente 6 horas sin comer y 2 horas sin beber líquidos claros, salvo indicación contraria."},
-    {"q": "¿Puedes una colonoscopia?", "a": "Es un examen para explorar el interior del colon con una cámara flexible, para detectar pólipos o enfermedades."},
-    {"q": "¿Qué o conducir después de la anestesia?", "a": "No, venga acompañado. No conduzca ni firme documentos importantes el mismo día."},
+    {"q": "¿Puedo conducir después de la anestesia?", "a": "No, traiga un acompañante. No conduzca ni firme documentos importantes el mismo día."},
+    {"q": "¿Qué es una colonoscopia?", "a": "Es un examen para explorar el interior del colon con una cámara flexible, para detectar pólipos o enfermedades."},
     {"q": "¿Qué tratamientos debo suspender antes de una colonoscopia?", "a": "Aspirina, anticoagulantes o antiagregantes pueden requerir ajuste: pida consejo personalizado."},
     {"q": "¿Cuánto dura una colonoscopia?", "a": "Unos 20 a 30 minutos, más el tiempo de preparación y recuperación."},
     {"q": "¿Cuándo consultar de urgencia?", "a": "Fiebre alta, sangre en las heces, dolor abdominal intenso, vómitos repetidos: llame o vaya a urgencias."},
