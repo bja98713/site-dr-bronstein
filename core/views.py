@@ -7,7 +7,9 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 import json
 import unicodedata
+import difflib
 from .forms import ContactForm
+from .rag_utils import load_pdf_content
 
 
 EXAMS = [
@@ -1000,7 +1002,9 @@ FAQS_FR = [
 	{"q": "Quand consulter en urgence ?", "a": "Fièvre élevée, sang dans les selles, douleurs abdominales intenses, vomissements répétés : appelez ou rendez-vous aux urgences."},
 	{"q": "Faut-il une ordonnance pour consulter ?", "a": "Il est préférable d'avoir un courrier de votre médecin traitant pour respecter le parcours de soins et être mieux remboursé."},
 	{"q": "Le médecin est-il conventionné ?", "a": "Oui, le Dr Bronstein est conventionné et accepte le tiers payant."},
-	{"q": "Quels sont les horaires de consultation ?", "a": "Le cabinet est ouvert du lundi au vendredi de 7h00 à 17h00, et le samedi de 8h30 à 12h00."},
+	{"q": "Quels sont les horaires d'ouverture et de consultation du cabinet ?", "a": "Le cabinet est ouvert du lundi au vendredi de 7h00 à 17h00, et le samedi de 8h30 à 12h00."},
+	{"q": "Quelle est l'adresse du cabinet ?", "a": "Le cabinet est situé à Papeete, immeuble Air France. Des parkings sont disponibles à proximité (Tarahoi)."},
+	{"q": "Comment contacter le cabinet ?", "a": "Vous pouvez nous joindre par téléphone au 40 81 48 48 ou via le formulaire de contact du site."},
 	{"q": "Comment se passe le paiement ?", "a": "Le règlement se fait sur place par chèque, espèces ou carte bancaire. Le tiers payant est possible selon votre couverture."},
 	{"q": "Où se garer pour venir au cabinet ?", "a": "Des parkings publics sont disponibles à proximité de l'immeuble Air France (parking Tarahoi ou front de mer)."},
 	{"q": "Les enfants sont-ils pris en charge ?", "a": "Le Dr Bronstein reçoit les adultes et adolescents. Pour les jeunes enfants, un pédiatre gastro-entérologue est recommandé."},
@@ -1511,7 +1515,10 @@ def chatbot_api(request):
                     'a', 'au', 'aux', 'ce', 'cette', 'ces', 'mon', 'ma', 'mes', 'ton', 'ta', 'tes', 'son', 'sa', 'ses', 'notre', 'votre', 
                     'leur', 'leurs', 'que', 'qui', 'quoi', 'ou', 'quand', 'comment', 'pourquoi', 'quel', 'quelle', 'quels', 'quelles', 
                     'sur', 'sous', 'dans', 'par', 'pour', 'en', 'vers', 'avec', 'sans', 'y', 't', 'me', 'se', 'c', 'qu', 'j', 'l', 'n', 'd', 's', 'm',
-                    'cest', 'quest', 'qu est', 'c est', 'sont', 'suis', 'es', 'sommes', 'etes', 'ete', 'etait', 'etaient'
+                    'cest', 'quest', 'qu est', 'c est', 'sont', 'suis', 'es', 'sommes', 'etes', 'ete', 'etait', 'etaient',
+                    'donne', 'moi', 'toi', 'lui', 'eux', 'ca', 'ceci', 'cela', 'faire', 'avoir', 'etre', 'aller', 'voir', 'savoir', 'pouvoir', 'vouloir', 'devoir', 'falloir',
+                    'bonjour', 'merci', 'svp', 'plait', 'sil', 'te', 'se', 'nous', 'vous', 'ils', 'elles', 'on', 'en', 'y',
+                    'numero', 'num', 'info', 'infos', 'information', 'informations', 'renseignement', 'renseignements',
                 }
                 synonyms = {
                     "rdv": "rendez-vous",
@@ -1531,11 +1538,8 @@ def chatbot_api(request):
                     "bide": "abdominale",
                     "ventre": "abdominale",
                     "estomac": "abdominale",
-                    "adresse": "garer",
-                    "localisation": "garer",
-                    "ou": "garer",
-                    "place": "garer",
                     "parking": "garer",
+                    "stationnement": "garer",
                     "resultat": "resultats",
                     "biopsie": "biopsies",
                     "lait": "lactose",
@@ -1559,6 +1563,138 @@ def chatbot_api(request):
                     "heure": "horaires",
                     "ouverture": "horaires",
                     "fermeture": "horaires",
+                    "telephone": "contacter",
+                    "tel": "contacter",
+                    "mail": "contacter",
+                    "mails": "contacter",
+                    "email": "contacter",
+                    "emails": "contacter",
+                    "joindre": "contacter",
+                    "appeler": "contacter",
+                    # Anatomy
+                    "intestin": "abdominale",
+                    "colon": "abdominale",
+                    "foie": "hepatique",
+                    "oesophage": "abdominale",
+                    "gorge": "oesophage",
+                    "rectum": "anus",
+                    "bouche": "abdominale",
+                    # Symptoms - Pain/Discomfort
+                    "douleur": "douleurs",
+                    "souffrance": "douleurs",
+                    "bobo": "douleurs",
+                    "crampe": "douleurs",
+                    "spasme": "douleurs",
+                    "picotement": "douleurs",
+                    "lance": "douleurs",
+                    "aigreur": "reflux",
+                    "pyrosis": "reflux",
+                    "regurgitation": "reflux",
+                    "amer": "reflux",
+                    # Symptoms - Digestive
+                    "vomi": "vomissements",
+                    "vomir": "vomissements",
+                    "gerber": "vomissements",
+                    "nausee": "vomissements",
+                    "ecoeurement": "vomissements",
+                    "sang": "saignement",
+                    "saigne": "saignement",
+                    "hemorragie": "saignement",
+                    "rouge": "saignement",
+                    "noir": "melena",
+                    "goudron": "melena",
+                    "diarrhee": "transit",
+                    "chiasse": "transit",
+                    "courante": "transit",
+                    "liquide": "transit",
+                    "eau": "transit",
+                    "dur": "constipation",
+                    "bloque": "constipation",
+                    "coince": "constipation",
+                    "bouche": "constipation",
+                    "gaz": "ballonnements",
+                    "pet": "ballonnements",
+                    "rot": "ballonnements",
+                    "ballonne": "ballonnements",
+                    "gonfle": "ballonnements",
+                    "air": "ballonnements",
+                    "glouglou": "ballonnements",
+                    # General State
+                    "fatigue": "asthenie",
+                    "epuise": "asthenie",
+                    "creve": "asthenie",
+                    "fievre": "temperature",
+                    "chaud": "temperature",
+                    "frisson": "temperature",
+                    "maigrir": "poids",
+                    "grossir": "poids",
+                    "appetit": "faim",
+                    # Procedures
+                    "colo": "coloscopie",
+                    "gastro": "gastroscopie",
+                    "endo": "endoscopie",
+                    "camera": "endoscopie",
+                    "tuyau": "endoscopie",
+                    "fibro": "gastroscopie",
+                    "echo": "echographie",
+                    "scan": "scanner",
+                    "irm": "scanner",
+                    "operation": "intervention",
+                    "chirurgie": "intervention",
+                    "bloc": "intervention",
+                    "anesthesie": "dodo",
+                    "dormir": "anesthesie",
+                    "reveil": "anesthesie",
+                    "sedation": "anesthesie",
+                    # Preparation
+                    "preparation": "prepa",
+                    "purge": "prepa",
+                    "sachet": "prepa",
+                    "picoprep": "prepa",
+                    "citrafleet": "prepa",
+                    "moviprep": "prepa",
+                    "colokit": "prepa",
+                    "izinova": "prepa",
+                    "kleanprep": "prepa",
+                    # Conditions
+                    "ulcere": "pathologie",
+                    "tumeur": "pathologie",
+                    "polype": "pathologie",
+                    "kyste": "pathologie",
+                    "diverticule": "pathologie",
+                    "hernie": "pathologie",
+                    "calcul": "lithiase",
+                    "caillou": "lithiase",
+                    "pierre": "lithiase",
+                    "vesicule": "lithiase",
+                    "gluten": "coeliaque",
+                    "ble": "coeliaque",
+                    "sucre": "intolerance",
+                    # Administrative
+                    "carte": "vitale",
+                    "vitale": "assurance",
+                    "mutuelle": "assurance",
+                    "remboursement": "paiement",
+                    "secu": "assurance",
+                    "cps": "assurance",
+                    "feuille": "papier",
+                    "ordonnance": "prescription",
+                    "papier": "document",
+                    "arret": "travail",
+                    "certificat": "document",
+                    "lettre": "courrier",
+                    "dossier": "document",
+                    # Urgency/Feelings
+                    "peur": "anxiete",
+                    "stress": "anxiete",
+                    "inquiet": "anxiete",
+                    "angoisse": "anxiete",
+                    "grave": "urgence",
+                    "urgent": "urgence",
+                    "vite": "urgence",
+                    "maintenant": "urgence",
+                    "secours": "urgence",
+                    "aide": "urgence",
                 }
 
             # Basic greetings
@@ -1582,7 +1718,7 @@ def chatbot_api(request):
                 # 1. Exact matches
                 common_words = user_words_set.intersection(question_words)
                 meaningful_matches = [w for w in common_words if w not in stop_words and len(w) > 2]
-                score = len(meaningful_matches) * 10  # Exact matches are worth a lot more
+                score = len(meaningful_matches) * 30  # FAQs are prioritized (30pts per word)
                 
                 # 2. Fuzzy matches (handle typos)
                 for u_word in user_words_set:
@@ -1591,19 +1727,19 @@ def chatbot_api(request):
                     # Find close matches in question words
                     matches = difflib.get_close_matches(u_word, question_words, n=1, cutoff=0.85)
                     if matches:
-                        score += 5 # Fuzzy match is worth less
+                        score += 15 # Fuzzy match bonus
 
                 # 3. Coverage bonus (prioritize questions where a larger portion of the question is matched)
                 question_meaningful_words = [w for w in question_words if w not in stop_words and len(w) > 2]
                 if question_meaningful_words:
                     coverage = len(meaningful_matches) / len(question_meaningful_words)
-                    score += coverage * 5
+                    score += coverage * 10
 
                 # 4. Sequence Matcher (Sentence similarity)
                 # This helps when the user asks a question very similar to the FAQ title
                 seq_ratio = difflib.SequenceMatcher(None, normalize_text(user_message), question).ratio()
                 if seq_ratio > 0.5:
-                    score += seq_ratio * 20  # Big bonus for sentence similarity
+                    score += seq_ratio * 30  # Big bonus for sentence similarity
                 
                 if score > max_score:
                     max_score = score
@@ -1646,6 +1782,10 @@ def chatbot_api(request):
             
             for post in BLOG_POSTS:
                 site_content.append({'type': 'article', 'title': post['title'], 'url': f"/blog/{post['slug']}", 'keywords': post['title'] + " " + post.get('excerpt', '') + " " + post.get('content', '')})
+
+            # Add PDF documents from RAG folder
+            pdf_docs = load_pdf_content()
+            site_content.extend(pdf_docs)
 
             for item in site_content:
                 content_text = normalize_text(item['keywords'])
