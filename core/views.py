@@ -1590,6 +1590,12 @@ def chatbot_api(request):
                     matches = difflib.get_close_matches(u_word, question_words, n=1, cutoff=0.85)
                     if matches:
                         score += 5 # Fuzzy match is worth less
+
+                # 3. Coverage bonus (prioritize questions where a larger portion of the question is matched)
+                question_meaningful_words = [w for w in question_words if w not in stop_words and len(w) > 2]
+                if question_meaningful_words:
+                    coverage = len(meaningful_matches) / len(question_meaningful_words)
+                    score += coverage * 5
                 
                 if score > max_score:
                     max_score = score
