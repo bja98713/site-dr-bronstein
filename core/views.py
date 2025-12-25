@@ -1757,7 +1757,7 @@ def chatbot_api(request):
                     exam.get('aftercare', ''),
                     " ".join(exam.get('risks', []))
                 ]
-                site_content.append({'type': 'examen', 'title': exam['title'], 'url': f"/exams/{exam['slug']}", 'keywords': " ".join(keywords)})
+                site_content.append({'type': 'examen', 'title': exam['title'], 'url': f"/examens/{exam['slug']}", 'keywords': " ".join(keywords)})
             
             for path in PATHOLOGIES:
                 keywords = [
