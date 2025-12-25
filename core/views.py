@@ -1612,13 +1612,40 @@ def chatbot_api(request):
             # Search in site content (Exams, Pathologies, Guides, Blog) - Mainly for French context or universal terms
             site_content = []
             for exam in EXAMS:
-                site_content.append({'type': 'examen', 'title': exam['title'], 'url': f"/exams/{exam['slug']}", 'keywords': exam['title'] + " " + exam.get('description', '') + " " + " ".join(exam.get('indications', []))})
+                keywords = [
+                    exam['title'],
+                    exam.get('description', ''),
+                    " ".join(exam.get('indications', [])),
+                    exam.get('preparation', ''),
+                    exam.get('procedure', ''),
+                    exam.get('aftercare', ''),
+                    " ".join(exam.get('risks', []))
+                ]
+                site_content.append({'type': 'examen', 'title': exam['title'], 'url': f"/exams/{exam['slug']}", 'keywords': " ".join(keywords)})
+            
             for path in PATHOLOGIES:
-                site_content.append({'type': 'pathologie', 'title': path['title'], 'url': f"/pathologies/{path['slug']}", 'keywords': path['title'] + " " + path.get('summary', '') + " " + " ".join(path.get('symptoms', [])) + " " + " ".join(path.get('tags', []))})
+                keywords = [
+                    path['title'],
+                    path.get('summary', ''),
+                    " ".join(path.get('symptoms', [])),
+                    " ".join(path.get('tags', [])),
+                    " ".join(path.get('treatments', [])),
+                    " ".join(path.get('advice', [])),
+                    " ".join(path.get('prevention', [])),
+                    " ".join(path.get('exams', []))
+                ]
+                site_content.append({'type': 'pathologie', 'title': path['title'], 'url': f"/pathologies/{path['slug']}", 'keywords': " ".join(keywords)})
+            
             for guide in GUIDES:
-                site_content.append({'type': 'guide', 'title': guide['title'], 'url': f"/guides/#{guide['slug']}", 'keywords': guide['title'] + " " + guide.get('summary', '')})
+                keywords = [
+                    guide['title'],
+                    guide.get('summary', ''),
+                    " ".join(guide.get('steps', []))
+                ]
+                site_content.append({'type': 'guide', 'title': guide['title'], 'url': f"/guides/#{guide['slug']}", 'keywords': " ".join(keywords)})
+            
             for post in BLOG_POSTS:
-                site_content.append({'type': 'article', 'title': post['title'], 'url': f"/blog/{post['slug']}", 'keywords': post['title'] + " " + post.get('excerpt', '')})
+                site_content.append({'type': 'article', 'title': post['title'], 'url': f"/blog/{post['slug']}", 'keywords': post['title'] + " " + post.get('excerpt', '') + " " + post.get('content', '')})
 
             for item in site_content:
                 content_text = normalize_text(item['keywords'])
