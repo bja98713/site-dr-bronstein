@@ -1612,9 +1612,9 @@ def chatbot_api(request):
             # Search in site content (Exams, Pathologies, Guides, Blog) - Mainly for French context or universal terms
             site_content = []
             for exam in EXAMS:
-                site_content.append({'type': 'examen', 'title': exam['title'], 'url': f"/exams/{exam['slug']}", 'keywords': exam['title'] + " " + exam.get('description', '')})
+                site_content.append({'type': 'examen', 'title': exam['title'], 'url': f"/exams/{exam['slug']}", 'keywords': exam['title'] + " " + exam.get('description', '') + " " + " ".join(exam.get('indications', []))})
             for path in PATHOLOGIES:
-                site_content.append({'type': 'pathologie', 'title': path['title'], 'url': f"/pathologies/{path['slug']}", 'keywords': path['title'] + " " + path.get('summary', '') + " " + " ".join(path.get('symptoms', []))})
+                site_content.append({'type': 'pathologie', 'title': path['title'], 'url': f"/pathologies/{path['slug']}", 'keywords': path['title'] + " " + path.get('summary', '') + " " + " ".join(path.get('symptoms', [])) + " " + " ".join(path.get('tags', []))})
             for guide in GUIDES:
                 site_content.append({'type': 'guide', 'title': guide['title'], 'url': f"/guides/#{guide['slug']}", 'keywords': guide['title'] + " " + guide.get('summary', '')})
             for post in BLOG_POSTS:
@@ -1625,8 +1625,13 @@ def chatbot_api(request):
                 
                 # Reuse scoring logic (simplified)
                 user_words = user_message.split()
-                user_words = [synonyms.get(w, w) for w in user_words]
-                user_words_set = set(user_words)
+                # Expand synonyms instead of replacing
+                expanded_words = set(user_words)
+                for w in user_words:
+                    if w in synonyms:
+                        expanded_words.add(synonyms[w])
+                user_words_set = expanded_words
+                
                 content_words = set(content_text.split())
                 
                 common_words = user_words_set.intersection(content_words)
