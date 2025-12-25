@@ -126,7 +126,11 @@
       <article class="card">
         <h3>{{ guide.title }}</h3>
         <p class="muted">{{ guide.summary }}</p>
+        {% if guide.video %}
+        <a class="link" href="{{ guide.video }}" target="_blank" rel="noopener">Voir la vidéo</a>
+        {% elif guide.pdf %}
         <a class="link" href="{{ guide.pdf }}">Télécharger le PDF</a>
+        {% endif %}
       </article>
     {% endfor %}
   </div>
