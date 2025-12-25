@@ -16,7 +16,9 @@
             {% endfor %}
           </ul>
         {% endif %}
-        {% if guide.pdf %}
+        {% if guide.video %}
+          <a class="btn ghost" href="{{ guide.video }}" target="_blank" rel="noopener">Voir la vidéo</a>
+        {% elif guide.pdf %}
           <a class="btn ghost" href="{{ guide.pdf }}">Télécharger le PDF</a>
         {% endif %}
       </article>

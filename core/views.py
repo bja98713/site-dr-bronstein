@@ -951,6 +951,7 @@ GUIDES = [
 			"Hydratation par liquides clairs jusqu'à l'horaire autorisé.",
 			"Arriver accompagné si anesthésie; ne pas conduire après l'examen.",
 		],
+		"video": "https://youtu.be/f91Kz8PWAxM?si=MyUPtiT9RDjLvJhD",
 		"pdf": "",
 	},
 	{
