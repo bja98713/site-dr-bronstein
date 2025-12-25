@@ -1659,11 +1659,12 @@ def chatbot_api(request):
                 'maladie', 'traitement', 'symptome', 'douleur', 'cancer', 'examen', 'medicament', 'effets', 'risques',
                 'disease', 'treatment', 'symptom', 'pain', 'exam', 'drug', 'risk',
                 'enfermedad', 'tratamiento', 'sintoma', 'dolor', 'examen', 'riesgo',
-                'crohn', 'rch', 'rectocolite', 'hepatite', 'cirrhose', 'ulcere', 'polype', 'diverticule'
+                'crohn', 'rch', 'rectocolite', 'hepatite', 'cirrhose', 'ulcere', 'polype', 'diverticule',
+                'coloscopie', 'gastroscopie', 'endoscopie'
             }
             
-            # Only suggest OpenEvidence if the FAQ match is not very strong
-            if any(kw in user_message for kw in medical_keywords) and max_score < 20:
+            # Always suggest OpenEvidence for medical queries to allow complementary info
+            if any(kw in user_message for kw in medical_keywords):
                 response_data['suggest_openevidence'] = True
                 
             return JsonResponse(response_data)
