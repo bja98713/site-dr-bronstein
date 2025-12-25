@@ -1354,15 +1354,17 @@ def chatbot_api(request):
                 
                 if any(w in user_message for w in ['risque', 'danger', 'complication', 'risk', 'perforation', 'hemorragie']):
                      response_text = "Les études montrent une incidence très faible de complications majeures (< 0.1%). Le rapport bénéfice/risque reste très favorable pour le dépistage."
-                elif any(w in user_message for w in ['traitement', 'soigner', 'medicament', 'treatment', 'guerir']):
-                     response_text = "Les protocoles actuels préconisent une approche graduelle, débutant souvent par des mesures hygiéno-diététiques avant d'envisager un traitement médicamenteux."
+                elif any(w in user_message for w in ['traitement', 'soigner', 'medicament', 'treatment', 'guerir', 'aspirine', 'anticoagulant']):
+                     response_text = "Les protocoles actuels préconisent une approche graduelle. Pour les traitements anticoagulants, un avis médical est indispensable avant tout acte endoscopique."
+                elif any(w in user_message for w in ['coloscopie', 'gastroscopie', 'endoscopie', 'examen', 'camera', 'polype']):
+                     response_text = "L'endoscopie est l'examen de référence pour explorer le tube digestif. Elle permet un diagnostic précis (visuel et biopsies) et parfois un traitement immédiat (ex: ablation de polypes)."
                 elif any(w in user_message for w in ['symptome', 'douleur', 'signe', 'symptom', 'mal', 'ventre']):
                      response_text = "La présentation clinique peut être variable. L'examen clinique et l'endoscopie sont souvent nécessaires pour confirmer le diagnostic et exclure d'autres pathologies."
                 elif any(w in user_message for w in ['prepa', 'boire', 'manger', 'regime']):
                      response_text = "La qualité de la préparation est le facteur prédictif le plus important pour la réussite de l'examen. Il est crucial de suivre le protocole à la lettre."
 
                 return JsonResponse({
-                    'response': f"Voici une réponse complémentaire basée sur les données médicales : \n\n{response_text}\n\nVeuillez consulter votre médecin pour un avis personnalisé."
+                    'response': f"Voici des informations complémentaires : \n\n{response_text}\n\n(Ceci est une réponse générée automatiquement, veuillez consulter votre médecin pour un avis personnalisé.)"
                 })
             
             print(f"Chatbot received: {raw_message} -> {user_message}")
