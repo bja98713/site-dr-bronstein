@@ -4,8 +4,21 @@
 <article class="section narrow">
   <p class="muted">{{ post.date }} · {{ post.author }}</p>
   <h1>{{ post.title }}</h1>
+  {% if post.image %}
+    <img src="{{ post.image }}" alt="{{ post.title }}" style="width: 100%; height: auto; border-radius: var(--radius); margin-bottom: 2rem; display: block;">
+  {% endif %}
   <p class="lead">{{ post.excerpt }}</p>
-  <p>{{ post.content }}</p>
+  <div class="content">
+    {{ post.content|linebreaks }}
+  </div>
+  {% if post.video %}
+    <div style="margin-top: 2rem; border-radius: var(--radius); overflow: hidden;">
+      <video controls style="width: 100%; display: block;">
+        <source src="{{ post.video }}" type="video/mp4">
+        Votre navigateur ne supporte pas la lecture de vidéos.
+      </video>
+    </div>
+  {% endif %}
   <div class="meta">
     <a class="link" href="/blog/">Retour aux actualités</a>
   </div>

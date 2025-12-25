@@ -24,6 +24,7 @@ EXAMS = [
 		"documents": [
 			{"label": "Consignes fibroscopie (en ligne)", "url": "/guides/#deroulement-fibroscopie"},
 		],
+		"video": "https://monhepatogastro.net/wp-content/uploads/2022/04/Gastroscopie_Int.mp4",
 	},
 	{
 		"slug": "coloscopie",
@@ -42,6 +43,7 @@ EXAMS = [
 		"documents": [
 			{"label": "Préparation coloscopie (en ligne)", "url": "/guides/#preparation-coloscopie"},
 		],
+		"video": "https://monhepatogastro.net/wp-content/uploads/2022/04/Coloscopie.mp4",
 	},
 	{
 		"slug": "echographie",
@@ -94,6 +96,7 @@ EXAMS = [
 		"duration": "30 à 60 minutes selon complexité (hors surveillance).",
 		"risks": ["Pancréatite post-CPRE (rare mais surveillée)", "Saignement ou infection (faible fréquence)"],
 		"documents": [],
+		"video": "https://monhepatogastro.net/wp-content/uploads/2022/04/CPRE.mp4",
 	},
 	{
 		"slug": "maladies-anus",
@@ -139,12 +142,98 @@ EXAMS = [
 
 BLOG_POSTS = [
 	{
+		"slug": "choix-preparation-coloscopie",
+		"title": "Pour une coloscopie, quel produit choisir ?",
+		"date": "24 décembre 2025",
+		"author": "Jean-Ariel Bronstein",
+		"excerpt": "Comparatif des différentes préparations pour coloscopie : PEG, CitraFleet, Picoprep, Izinova... Lequel choisir ?",
+		"content": """La coloscopie est un examen d’endoscopie digestive qui permet d’étudier la paroi interne du colon. Il s’agit actuellement du seul examen qui permet d’analyser, de façon fiable, l’aspect de la muqueuse afin de rechercher des atteintes inflammatoires (maladie de Crohn, rectocolite hémorragique, colite ischémique etc…). La coloscopie permet de réaliser des biopsies, l’ablation de polypes et de dépister le cancer du colon et du rectum.
+La préparation est donc indispensable pour un examen de qualité. Le côlon doit être parfaitement propre, pour permettre un examen précis et réaliser les gestes thérapeutiques utiles. Mais il faut bien être objectif : la plupart de temps la préparation colique n’est pas agréable et favorise les « grimaces », même aux médecins les plus connus…
+
+De nombreuses préparations coliques sont actuellement commercialisées en pharmacie. Nous allons vous présenter sur cette page une synthèse descriptive de ces préparations. Nous détaillerons à chaque fois les éléments suivants : Le nom commercial, le prix, le taux de remboursement, les substances actives (DCI), les excipients, les contre-indications, le principe de la préparation et notre avis pratique.
+
+Les préparations à base de PEG :
+Ces préparations sont constituées par du poly-éthylène-glycol ou PEG. Ils existent en pharmacie sous les noms commerciaux de COLOPEG®, FORTRANS®, KLEAN PREP® ou MOVIPREP®. Ce liquide n’est pas réabsorbé par l’intestin ou le côlon et est donc évacué avec les selles.
+
+KLEAN PREP® :
+Taux de remboursement : 65 %.
+Substance active (DCI) : macrogol 3350 (59 g), sulfate de sodium anhydre (5,68 g), bicarbonate de sodium (1,68 g), chlorure de sodium (1,46 g), chlorure de potassium (0,74 g) + un sachet saveur Vanille.
+Contre-indications particulières : phénylcétonurie (présence d’aspartam).
+
+FORTRANS® :
+Taux de remboursement : 65 %.
+Substance active (DCI) : macrogol 4000 (64 g), sulfate de sodium anhydre (5.7 g), bicarbonate de sodium (1.68 g), chlorure de potassium (0.75g), chlorure de sodium (1.46 g).
+Contre-indications particulières : Non
+
+COLOPEG® :
+Taux de remboursement : 65 %.
+Substance active (DCI): macrogol 3350 (59 g), sulfate de sodium anhydre (5,68 g), bicarbonate de sodium (1,68 g), chlorure de sodium (1,46 g), chlorure de potassium (0,74 g).
+Contre-indications particulières: Non
+
+Pour ces trois produits très proches :
+Principe de la préparation : Il faut prendre un sachet à reconstituer dans un litre d’eau en mélangeant bien. Il faut boire en tout 4 litres (4 sachets) soit en 1 fois dans la soirée précédant l’examen, soit en 2 fois, à raison de 2 litres la veille au soir et 2 litres le matin avant l’examen. Dans ce cas, la dernière prise devra avoir lieu au moins 3 heures avant l’examen. Le volume de 2 litres doit être pris en moins de 2 heures pour avoir l’efficacité escomptée.
+Avis pratique : Le volume de la préparation reste important avec un goût peu agréable surtout pour le KLEAN PREP® qui a un goût de vanille très prononcé (sauf pour les « fous de vanille »). On peut éviter de mettre le sachet de vanille dans cette dernière et utiliser un liquide aromatique comme le « Pulco Citron ». L’efficacité n’est plus à démontrer pour ces produits mais la quantité à boire est importante.
+
+MOVIPREP® :
+Taux de remboursement : 65 %
+Substance active (DCI) : Macrogol (polyéthylèneglycol) 3 350 (100 g), Sulfate de sodium anhydre (7,5 g) Chlorure de sodium (2,691 g), Chlorure de potassium (1,015 g), Acide ascorbique (4,7 g), Ascorbate de sodium (5,9 g) +Aspartam
+Contre-indications particulières : déficit en G6PD, phénylcétonurie (présence d’aspartam).
+Le principe de la préparation : La préparation consiste à boire deux litres de solution et de boire également, en plus, un litre de liquide clair incluant eau, soupe claire, jus de fruit sans pulpe, boisson non alcoolisée, thé et/ou café sans lait. On obtient un litre de Moviprep® en faisant dissoudre ensemble 1 sachet A et 1 sachet B dans un litre d’eau. Cette solution reconstituée doit être bue sur une période d’une à deux heures. Cette préparation peut être prise des façons suivantes : soit en deux fois avec un litre de Moviprep® ingéré la veille au soir de l’examen et un litre ingéré tôt dans la matinée le jour de l’examen, soit en une fois avec les deux litres de Moviprep® ingérés la veille au soir de l’examen.
+Notre avis : Le médicament a l’avantage théorique de comporter seulement 2 litres de préparation + 1 litre d’eau ou de liquide clair. Le goût de la préparation n’est pas très agréable.
+
+Les nouvelles préparations à base de laxatifs :
+Elles sont constituées par l’association de picosulfate de sodium (laxatif stimulant) et de citrate de magnésium (laxatif osmotique) pour le PICOPREP® et CITRAFLEET® ou par du phosphate de sodium (laxatif osmotique) en solution pour le FLEET PHOSPHO SODA® et en comprimés pour le COLOKIT® ou une association de laxatifs osmotiques (sulfate de sodium, sulfate de magnésium et sulfate de potassium pour L’IZINOVA®
+
+FLEET PHOSPHO SODA® :
+Taux de remboursement : 65 %.
+Substance active (DCI) : Hydrogénophosphate de sodium (10,8 g), Dihydrogénophosphate de sodium (24,4 g), Sodium (5 g)
+Contre-indications particulières : insuffisance cardiaque grave et insuffisance rénale. Cette préparation est à éviter en cas de poussée inflammatoire évolutive du colon.
+Principe de la préparation : Le contenu d’un flacon doit être dilué dans un demi-verre d’eau. La prise du médicament se fait la veille de l’examen. il faut prendre aux repas uniquement une boisson (eau, bouillon, jus de fruits sans pulpe, thé, café, sodas) et le contenu d’un flacon.
+Notre avis : Le volume est identique mais avec le choix dans le type de liquides à prendre. Le flacon à un goût peu agréable qui peut-être difficile à prendre le matin avec des nausées. L’efficacité est lié à la quantité de liquide pris par le patient. Si l’on suit les indications il faut rester sans prise d’aliments solides la veille ce qui est assez gênant. Il existe des effets indésirables à prendre en considération et surtout l’apparition de lésions aphtoïdes pouvant gêner l’interprétation de l’examen.
+
+COLOKIT® :
+Taux de remboursement : 65 %.
+Substance active (DCI) : Phosphate monosodique monohydraté (1102 mg), Phosphate disodique anhydre (398 mg) Pour un comprimé. Excipients : macrogol 8000, stéarate de magnésium. Teneur en sodium : 313 mg/cp
+Contre-indications particulières : Hypersensibilité aux principes actifs ou à l’un des excipients, insuffisance cardiaque congestive, insuffisance rénale cliniquement significative, une hyperparathyroidie primitive associée à une hypercalcémie. Cette préparation est à éviter en cas de poussée inflammatoire évolutive du colon.
+Principe de la préparation : Le soir précédent l’examen il faut prendre 4 comprimés avec 250 ml d’eau (ou un autre liquide clair), Puis recommencer 4 fois de suite dans les mêmes conditions en espaçant les prises de 15 minutes, soit au total 20 comprimés à avaler. Le jour de l’examen (en commençant 4 à 5 heures avant l’examen) il faut prendre 4 comprimés avec 250 ml d’eau (ou un autre liquide clair), puis recommencer 2 fois de suite dans les mêmes conditions en espaçant les prises de 15 minutes soit au total 12 comprimés à avaler.
+Notre avis : Le médicament a l’avantage théorique de n’utiliser que le liquide que l’on prend pour avaler les comprimés. Il y a en tout 32 cp à prendre. Cela peut gêner certains patients mais être un avantage pour d’autres car il n’y a pas vraiment de préparations à avaler.
+
+CITRAFLEET® :
+Taux de remboursement : 65 %.
+Substance active (DCI) : Picosulfate de sodium (10 mg), Oxyde de magnésium léger (3,5 g), Acide citrique anhydre (10,97 g). Excipients : bicarbonate de potassium, saccharine sodique, arôme citron (arôme citron, maltodextrine, tocophérol [E 307]).
+Contre-indications particulières : Hypersensibilité aux principes actifs ou à l’un des excipients, insuffisance cardiaque congestive, insuffisance rénale cliniquement significative, déshydratation sévère, hypermagnésémie. Cette préparation est à éviter en cas de poussée inflammatoire évolutive du colon.
+Principe de la préparation : Reconstituer le contenu d’un sachet dans une verre d’eau (environ 150 ml). La solution obtenue a un aspect trouble. Remuer pendant 2 à 3 minutes et boire la solution. Si elle est trop chaude, attendre qu’elle ait suffisamment refroidi pour la boire.
+Le protocole le plus simple pour une préparation la veille est la suivante : Prendre un sachet reconstitué dans de l’eau avant 20h00. Boire au moins deux litres de liquides claires sur deux heures dès l’apparition de l’effet du produit la veille de l’examen. Prendre le deuxième sachet à 3h du matin en buvant bien deux litres de liquides claires sur deux heures. Il faut être jeun solide à partir de minuit et a jeun liquide à 5h du matin.
+Notre avis : Le médicament a l’avantage d’être de bon goût et permet de n’utiliser que le liquide que l’on veut. Il faut en revanche bien boire au moins deux litres de boissons claires pour avoir une bonne efficacité.
+
+PICOPREP® :
+Taux de remboursement : 65 %.
+Substance active (DCI) : Picosulfate de sodium (10 mg), Oxyde de magnésium (3,5 g), Acide citrique anhydre (12 g). Excipients : bicarbonate de potassium, saccharine sodique, orange arôme naturel (gomme arabique, lactose, acide ascorbique, butylhydroxyanisole).
+Contre-indications particulières : Hypersensibilité aux principes actifs ou à l’un des excipients, insuffisance cardiaque congestive, insuffisance rénale cliniquement significative, déshydratation sévère, hypermagnésémie. Cette préparation est à éviter en cas de poussée inflammatoire évolutive du colon.
+Principe de la préparation : Il faut reconstituer le contenu d’un sachet dans un verre d’eau (environ 150 ml). Remuez pendant 2-3 minutes, la solution obtenue doit être un liquide opaque blanc cassé avec une légère odeur d’orange. Si la solution est trop chaude, attendez qu’elle ait suffisamment refroidi pour la boire.
+Le protocole le plus simple pour une préparation la veille est la suivante : Prendre un sachet reconstitué dans de l’eau avant 20h00. Boire au moins deux litres de liquides claires sur deux heures dès l’apparition de l’effet du produit la veille de l’examen. Prendre le deuxième sachet à 3h du matin en buvant bien deux litres de liquides claires sur deux heures. Il faut être jeun solide à partir de minuit et a jeun liquide à 5h du matin.
+Notre avis : Le médicament a l’avantage d’être de bon goût et permet de n’utiliser que le liquide que l’on veut. Il faut en revanche bien boire au moins deux litres de boissons claires pour avoir une bonne efficacité.
+
+IZINOVA® :
+Taux de remboursement : 65 %.
+Substance active (DCI) : Sulfate de sodium anhydre (17,510 g) Sulfate de magnésium heptahydraté (3,276 g) Sulfate de potassium (3,130 g). Excipients : Benzoate de sodium (E211), Acide citrique anhydre, Acide malique, Sucralose, Eau purifiée, Arôme cocktail de fruits.
+Contre-indications particulières : Hypersensibilité aux principes actifs ou à l’un des excipients, insuffisance cardiaque congestive, insuffisance rénale sévère, déshydratation sévère, iléus, vomissements abondants, occlusion gastro-intestinale connue ou suspectée, perforation intestinale, troubles de la vidange gastrique (par exemple : gastroparésie). Cette préparation est à éviter en cas de poussée inflammatoire évolutive du colon
+Principe de la préparation : Deux flacons sont nécessaires pour effectuer un lavage colique correct. Avant administration, le contenu de chaque flacon doit être dilué dans de l’eau, à l’aide du godet fourni, pour obtenir un volume total d’environ 0,5 litres. Pour chaque flacon, la prise doit être accompagnée, au cours des 2 heures suivantes, par l’ingestion supplémentaire de 1 litre d’eau ou de liquide clair. Si le délai avant l’intervention le permet, le schéma d’administration en prise fractionnée sur 2 jours doit être privilégié par rapport au schéma de prise sur une journée.
+Schéma en prises fractionnés : Au début de la soirée précédant l’intervention (par exemple vers 18 h), le contenu d’un flacon d’IZINOVA doit être versé dans le godet fourni dans la boite et doit être dilué avec de l’eau jusqu’à la ligne de remplissage (environ 0,5 litre) et être bu. Par la suite il faut boire au cours des deux heures suivantes, deux godets supplémentaires, remplis jusqu’à la ligne de remplissage avec de l’eau ou un liquide clair (soit environ 1 litre).
+Le matin de l’intervention (10 à 12 heures après la dose du soir), la prise d’un flacon comme décrit précédemment doit être répétée.
+Les liquides clairs autorisés sont : l’eau, le thé ou le café (pas de lait ou de crème), les sodas gazeux ou non, les jus de fruit sans pulpe (sauf ceux de couleur rouge ou violette), le bouillon ou la soupe moulinée pour éliminer les morceaux solides.
+Notre avis : Le médicament a montré sa supériorité par rapport à PICOPREP selon un schéma fractionné. Il a l’avantage d’être de bon goût et permet de n’utiliser que les liquides que l’on veut. La dose totale de liquide ingérée est plus faible par rapport aux autres préparations.""",
+		"image": "/static/img/exams/coloscopie.jpg",
+		"video": "https://monhepatogastro.net/wp-content/uploads/2022/04/Coloscopie.mp4",
+	},
+	{
 		"slug": "fibres-et-microbiote",
 		"title": "Fibres et microbiote : pourquoi en manger ?",
 		"date": "15 décembre 2025",
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Les fibres nourrissent votre microbiote et régulent le transit. Comment les intégrer progressivement ?",
 		"content": "Les fibres solubles et insolubles soutiennent la flore, limitent le pic glycémique et régulent le transit. Augmentez-les progressivement, buvez suffisamment, et consultez si douleurs ou ballonnements persistants.",
+		"image": "/static/img/pathologies/constipation.jpg",
 	},
 	{
 		"slug": "diarrhee-chronique",
@@ -153,6 +242,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Plus de 3 semaines de diarrhée : signes d'alerte, bilans et examens utiles.",
 		"content": "Une diarrhée qui dure nécessite un avis médical. Signes d'alerte : fièvre, sang dans les selles, amaigrissement, douleurs abdominales. Bilan sanguin, coproculture, calprotectine ou coloscopie peuvent être proposés selon le contexte.",
+		"image": "/static/img/pathologies/diarrhee-chronique.jpg",
 	},
 	{
 		"slug": "reflux-enceinte",
@@ -161,6 +251,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Adapter les repas, surélever la tête du lit, traitements compatibles : les bons réflexes.",
 		"content": "Fractionnez les repas, évitez les aliments acides, café, épices fortes. Surélevez la tête du lit et attendez 2-3h avant de vous allonger. Un traitement peut être proposé si les mesures hygiéno-diététiques ne suffisent pas.",
+		"image": "/static/img/pathologies/reflux-enceinte.jpg",
 	},
 	{
 		"slug": "foie-gras",
@@ -169,6 +260,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Alimentation, activité physique et suivi biologique pour limiter la progression.",
 		"content": "Le foie gras non alcoolique repose sur une alimentation équilibrée, une perte de poids progressive, l'activité physique et le suivi des enzymes hépatiques. Consultez pour adapter les examens (fibroscan, échographie).",
+		"image": "/static/img/pathologies/foie-gras.jpg",
 	},
 	{
 		"slug": "hydratation-digestion",
@@ -177,6 +269,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Boire suffisamment d'eau facilite le transit et l'absorption des nutriments. Visez 1,5L par jour.",
 		"content": "L'eau aide à dissoudre les graisses et les fibres solubles, permettant un passage plus facile des selles. En cas de constipation, les eaux riches en magnésium peuvent aider.",
+		"image": "/static/img/pathologies/constipation.jpg",
 	},
 	{
 		"slug": "manger-lentement",
@@ -185,6 +278,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "La digestion commence dans la bouche. Mâcher réduit le travail de l'estomac et les ballonnements.",
 		"content": "Prenez le temps de mastiquer. Cela permet de mieux imprégner les aliments de salive (enzymes), d'envoyer des signaux de satiété au cerveau et d'éviter d'avaler de l'air (aérophagie).",
+		"image": "/static/img/pathologies/dyspepsie.jpg",
 	},
 	{
 		"slug": "probiotiques-naturels",
@@ -193,6 +287,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Yaourts, choucroute, kéfir : ces aliments fermentés enrichissent votre flore intestinale.",
 		"content": "Les probiotiques sont des bactéries vivantes bénéfiques. Intégrez régulièrement des aliments fermentés comme le yaourt, le kéfir, la choucroute ou le miso pour diversifier votre microbiote.",
+		"image": "/static/img/pathologies/sibo.jpg",
 	},
 	{
 		"slug": "aliments-ultra-transformes",
@@ -201,6 +296,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Additifs, sucres cachés et mauvaises graisses perturbent l'équilibre digestif.",
 		"content": "Ces aliments contiennent souvent des émulsifiants et des conservateurs qui peuvent altérer la barrière intestinale et favoriser l'inflammation. Privilégiez les produits bruts et cuisinez maison.",
+		"image": "/static/img/pathologies/gastrite.jpg",
 	},
 	{
 		"slug": "sommeil-microbiote",
@@ -209,6 +305,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Un manque de sommeil peut perturber le microbiote et augmenter les envies de sucre.",
 		"content": "Le rythme circadien régule aussi la digestion. Un sommeil irrégulier ou insuffisant peut modifier la composition de la flore intestinale et favoriser la prise de poids ou les troubles fonctionnels.",
+		"image": "/static/img/pathologies/syndrome-intestin-irritable.jpg",
 	},
 	{
 		"slug": "stress-ventre",
@@ -217,6 +314,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Le cerveau et le ventre sont connectés. Le stress peut déclencher douleurs et troubles du transit.",
 		"content": "L'axe intestin-cerveau est bidirectionnel. Le stress chronique peut accélérer ou ralentir le transit et augmenter la sensibilité viscérale. La relaxation, le yoga ou la sophrologie peuvent aider.",
+		"image": "/static/img/pathologies/syndrome-intestin-irritable.jpg",
 	},
 	{
 		"slug": "gingembre-digestion",
@@ -225,6 +323,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Une racine reconnue pour apaiser l'estomac et stimuler la digestion.",
 		"content": "Le gingembre est efficace contre les nausées (grossesse, mal des transports) et aide à la vidange gastrique. Consommez-le frais, en infusion ou râpé dans vos plats.",
+		"image": "/static/img/pathologies/dyspepsie.jpg",
 	},
 	{
 		"slug": "activite-physique",
@@ -233,6 +332,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "La marche et le sport stimulent la motricité de l'intestin et réduisent la constipation.",
 		"content": "L'activité physique régulière renforce la sangle abdominale et masse naturellement les intestins, favorisant un transit régulier. Évitez cependant le sport intense juste après un repas copieux.",
+		"image": "/static/img/pathologies/constipation.jpg",
 	},
 	{
 		"slug": "sel-sante",
@@ -241,6 +341,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "L'excès de sel favorise l'hypertension et peut irriter la muqueuse gastrique.",
 		"content": "Une consommation excessive de sel est un facteur de risque pour l'estomac et le système cardiovasculaire. Utilisez des herbes, des épices et des aromates pour donner du goût sans saler.",
+		"image": "/static/img/pathologies/ascite.jpg",
 	},
 	{
 		"slug": "fodmaps-intro",
@@ -249,6 +350,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Ces sucres fermentescibles peuvent causer ballonnements et douleurs chez les personnes sensibles.",
 		"content": "FODMAPs signifie Fermentable Oligo-, Di-, Mono-saccharides And Polyols. En cas de syndrome de l'intestin irritable, un régime pauvre en FODMAPs (sous suivi diététique) peut soulager les symptômes.",
+		"image": "/static/img/pathologies/syndrome-intestin-irritable.jpg",
 	},
 	{
 		"slug": "alcool-foie",
@@ -257,6 +359,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Même une consommation modérée peut impacter le foie. Des jours sans alcool sont essentiels.",
 		"content": "Le foie métabolise l'alcool mais cela produit des substances toxiques. Pour préserver votre foie, respectez les recommandations (max 2 verres/jour, pas tous les jours) et faites des pauses.",
+		"image": "/static/img/pathologies/cirrhose.jpg",
 	},
 	{
 		"slug": "tabac-estomac",
@@ -265,6 +368,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Fumer augmente le risque de reflux, d'ulcères et de cancers digestifs.",
 		"content": "Le tabac affaiblit le sphincter œsophagien (reflux), diminue la production de mucus protecteur dans l'estomac et retarde la cicatrisation des ulcères. L'arrêt est toujours bénéfique.",
+		"image": "/static/img/pathologies/ulcere-gastrique.jpg",
 	},
 	{
 		"slug": "fibres-types",
@@ -273,6 +377,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Connaître la différence pour adapter son alimentation selon son transit.",
 		"content": "Les fibres solubles (avoine, fruits, légumineuses) forment un gel doux, bon pour la diarrhée et le cholestérol. Les insolubles (blé complet, son) accélèrent le transit mais peuvent irriter les intestins sensibles.",
+		"image": "/static/img/pathologies/diverticulose.jpg",
 	},
 	{
 		"slug": "repas-soir",
@@ -281,6 +386,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Un repas trop riche le soir peut perturber le sommeil et favoriser le reflux.",
 		"content": "La digestion demande de l'énergie et augmente la température corporelle. Manger gras ou copieux tardivement retarde l'endormissement et favorise les remontées acides nocturnes.",
+		"image": "/static/img/pathologies/brulure-estomac.jpg",
 	},
 	{
 		"slug": "cafe-digestion",
@@ -289,6 +395,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Il stimule le transit mais peut irriter l'estomac et favoriser le reflux.",
 		"content": "La caféine stimule la motricité colique (effet laxatif) mais aussi la sécrétion acide de l'estomac. À limiter en cas de brûlures d'estomac ou de diarrhée.",
+		"image": "/static/img/pathologies/brulure-estomac.jpg",
 	},
 	{
 		"slug": "legumineuses-digestion",
@@ -297,6 +404,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Trempage et cuisson adaptée pour profiter de leurs bienfaits sans les gaz.",
 		"content": "Lentilles, pois chiches et haricots sont excellents pour la santé. Pour limiter les flatulences, faites-les tremper longtemps, rincez-les bien et cuisez-les avec du bicarbonate ou de la sarriette.",
+		"image": "/static/img/pathologies/sibo.jpg",
 	},
 	{
 		"slug": "intolerance-lactose",
@@ -305,6 +413,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Pas besoin de tout supprimer. Les fromages affinés et les yaourts sont souvent tolérés.",
 		"content": "L'intolérance est due au manque de lactase. Testez votre tolérance : souvent, de petites quantités ou des produits laitiers fermentés (yaourts, fromages durs) passent très bien.",
+		"image": "/static/img/pathologies/syndrome-intestin-irritable.jpg",
 	},
 	{
 		"slug": "gluten-verite",
@@ -313,6 +422,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Inutile de l'exclure sans diagnostic de maladie cœliaque ou de sensibilité avérée.",
 		"content": "Le régime sans gluten est contraignant et peut être carencé. Si vous suspectez un problème, consultez pour un dépistage de la maladie cœliaque avant d'arrêter le gluten.",
+		"image": "/static/img/pathologies/maladie-coeliaque.jpg",
 	},
 	{
 		"slug": "couleurs-assiette",
@@ -321,6 +431,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "La variété des végétaux garantit un apport diversifié en antioxydants et vitamines.",
 		"content": "Chaque couleur de fruit ou légume correspond souvent à des nutriments spécifiques (lycopène rouge, bêta-carotène orange...). Varier les couleurs protège votre système digestif et votre santé globale.",
+		"image": "/static/img/exams/nutrition.jpg",
 	},
 	{
 		"slug": "ecouter-faim",
@@ -329,6 +440,7 @@ BLOG_POSTS = [
 		"author": "Jean-Ariel Bronstein",
 		"excerpt": "Manger selon ses besoins évite la surcharge pondérale et digestive.",
 		"content": "Apprenez à reconnaître la vraie faim (creux à l'estomac) de l'envie de manger (émotionnelle). Arrêtez-vous quand vous n'avez plus faim pour ne pas surcharger votre estomac.",
+		"image": "/static/img/pathologies/dyspepsie.jpg",
 	},
 ]
 

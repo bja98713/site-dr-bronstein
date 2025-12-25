@@ -96,7 +96,7 @@
   <p class="eyebrow"><strong>Pathologies</strong></p>
   <h2>Symptômes et quand consulter</h2>
   <div class="grid cards">
-    {% for p in pathologies|slice:':6' %}
+    {% for p in pathologies|slice:':8' %}
       <article class="card">
         {% if p.image %}
           <img src="{{ p.image }}" alt="{{ p.title }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 1rem; display: block;">
@@ -161,6 +161,9 @@
   <div class="grid cards">
     {% for post in blog_posts|slice:':3' %}
       <article class="card">
+        {% if post.image %}
+          <img src="{{ post.image }}" alt="{{ post.title }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 1rem; display: block;">
+        {% endif %}
         <p class="muted">{{ post.date }} · {{ post.author }}</p>
         <h3><a href="/blog/{{ post.slug }}/">{{ post.title }}</a></h3>
         <p>{{ post.excerpt }}</p>
@@ -189,10 +192,13 @@
         <p><strong>Boulevard Pomare</strong></p>
         <p class="muted">Front de mer</p>
         <p>98713 Papeete, Tahiti</p>
+        <div style="margin-top: 16px;">
+          <a class="btn outline" href="https://www.google.com/maps/search/?api=1&query=Clinique+Paofai+Tahiti" target="_blank">Itinéraire</a>
+        </div>
       </article>
     </div>
     <div style="border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); height: 100%; min-height: 300px;">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3785.676767368686!2d-149.5706886851076!3d-17.54250008798654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x769a360000000001%3A0x0!2zMTfCsDMyJzMzLjAiUyAxNDnCsDM0JzA2LjYiVw!5e0!3m2!1sfr!2spf!4v1635720000000!5m2!1sfr!2spf" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      <iframe src="https://maps.google.com/maps?q=Clinique+Paofai+Tahiti&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
     </div>
   </div>
 </section>

@@ -6,6 +6,15 @@
   <h1>{{ exam.title }}</h1>
   <p class="lead">{{ exam.description }}</p>
 
+  {% if exam.video %}
+    <div style="margin-bottom: 2rem; border-radius: var(--radius); overflow: hidden;">
+      <video controls style="width: 100%; display: block;">
+        <source src="{{ exam.video }}" type="video/mp4">
+        Votre navigateur ne supporte pas la lecture de vidéos.
+      </video>
+    </div>
+  {% endif %}
+
   <div class="cards">
     <article class="card">
       <h3>Indications principales</h3>
