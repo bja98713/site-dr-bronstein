@@ -964,6 +964,7 @@ GUIDES = [
 			"Surveillance en salle de réveil; reprise alimentaire légère après accord médical.",
 			"Ne pas conduire le jour même en cas de sédation/anesthésie.",
 		],
+		"video": "https://youtu.be/OpC2P8r0TQs?si=XmAeTBnkKAWhf4xk",
 		"pdf": "",
 	},
 	{
