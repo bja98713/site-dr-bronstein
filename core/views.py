@@ -1609,6 +1609,39 @@ def chatbot_api(request):
                     max_score = score
                     best_match = item['a']
             
+            # Search in site content (Exams, Pathologies, Guides, Blog) - Mainly for French context or universal terms
+            site_content = []
+            for exam in EXAMS:
+                site_content.append({'type': 'examen', 'title': exam['title'], 'url': f"/exams/{exam['slug']}", 'keywords': exam['title'] + " " + exam.get('description', '')})
+            for path in PATHOLOGIES:
+                site_content.append({'type': 'pathologie', 'title': path['title'], 'url': f"/pathologies/{path['slug']}", 'keywords': path['title'] + " " + path.get('summary', '') + " " + " ".join(path.get('symptoms', []))})
+            for guide in GUIDES:
+                site_content.append({'type': 'guide', 'title': guide['title'], 'url': f"/guides/#{guide['slug']}", 'keywords': guide['title'] + " " + guide.get('summary', '')})
+            for post in BLOG_POSTS:
+                site_content.append({'type': 'article', 'title': post['title'], 'url': f"/blog/{post['slug']}", 'keywords': post['title'] + " " + post.get('excerpt', '')})
+
+            for item in site_content:
+                content_text = normalize_text(item['keywords'])
+                
+                # Reuse scoring logic (simplified)
+                user_words = user_message.split()
+                user_words = [synonyms.get(w, w) for w in user_words]
+                user_words_set = set(user_words)
+                content_words = set(content_text.split())
+                
+                common_words = user_words_set.intersection(content_words)
+                meaningful_matches = [w for w in common_words if w not in stop_words and len(w) > 2]
+                score = len(meaningful_matches) * 10
+                
+                # Sequence match on title
+                seq_ratio = difflib.SequenceMatcher(None, normalize_text(user_message), normalize_text(item['title'])).ratio()
+                if seq_ratio > 0.6:
+                    score += seq_ratio * 25
+
+                if score > max_score:
+                    max_score = score
+                    best_match = f"Je vous suggère de consulter notre fiche {item['type']} sur '{item['title']}'. <br><a href='{item['url']}'>Cliquez ici pour voir la page</a>."
+
             print(f"Best match score: {max_score}")
 
             response_data = {}
