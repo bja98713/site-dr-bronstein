@@ -4,7 +4,7 @@
         position: fixed;
         bottom: 20px;
         right: 20px;
-        z-index: 1000;
+        z-index: 9999; /* Increased z-index to be above everything */
         font-family: system-ui, -apple-system, sans-serif;
     }
 
@@ -182,6 +182,7 @@
 </div>
 
 <script>
+    console.log("Chatbot widget loaded");
     document.addEventListener('DOMContentLoaded', function() {
         const toggle = document.getElementById('chatbot-toggle');
         const window = document.getElementById('chatbot-window');
