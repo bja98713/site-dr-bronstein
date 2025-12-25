@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,7 +8,7 @@
   
   <!-- SEO Meta Tags -->
   <meta name="description" content="{% block description %}Cabinet de gastro-entérologie, hépatologie et oncologie digestive à Papeete, Tahiti. Dr Jean-Ariel Bronstein. Consultations et endoscopies (coloscopie, gastroscopie). Conventionné CPS.{% endblock %}">
-  <meta name="keywords" content="Gastro-entérologue, Tahiti, Papeete, Dr Bronstein, Jean-Ariel Bronstein, Clinique Paofai, Coloscopie, Gastroscopie, Fibroscopie, Hépatologie, Proctologie, Hémorroïdes, Cancer côlon, Dépistage, Reflux, Estomac, Foie, Intestin, Digestion, Nutrition, Vidéocapsule, Maladie de Crohn, RCH, Urgences digestives, Conventionné CPS, Tiers payant, Polypes, Ulcère, Helicobacter pylori, Catheterisme billiaire, intolérance au gluten, colon irritable, colopathie fonctionnelle, FODMAPS, cancérologie, chimiothérapie, diabète, cancer, amaigrissement, fièvre, oesophagee, estomac, colon, intestin grele, expert, expert médical, coloscopie, gastroscopie, endoscopie, echographie abdominale, RGO, reflux, pH-métrie, Endoscopie interventionnelle">
+  <meta name="keywords" content="Gastro-entérologue, Tahiti, Papeete, Dr Bronstein, Jean-Ariel Bronstein, Clinique Paofai, Coloscopie, Gastroscopie, Fibroscopie, Hépatologie, Proctologie, Hémorroïdes, Cancer côlon, Dépistage, Reflux, Estomac, Foie, Intestin, Digestion, Nutrition, Vidéocapsule, Maladie de Crohn, RCH, Urgences digestives, Conventionné CPS, Tiers payant, Polypes, Ulcère, Helicobacter pylori, Catheterisme billiaire, intolérance au gluten, colon irritable, colopathie fonctionnelle, FODMAPS, cancérologie, chimiothérapie, diabète, cancer, amaigrissement, fièvre, oesophagee, estomac, colon, intestin grele, expert, expert médical, coloscopie, gastroscopie, endoscopie, echographie abdominale, RGO, reflux, pH-métrie, Endoscopie interventionnelle, english spoken, sailor, tourist, welcome">
   <meta name="author" content="Dr Jean-Ariel Bronstein">
   <meta name="robots" content="index, follow">
   
@@ -75,6 +75,13 @@
 </head>
 <body>
   <div class="top-actions">
+    <form action="{% url 'set_language' %}" method="post" style="display: inline-flex; gap: 8px; margin-right: 12px;">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.path }}">
+        <button type="submit" name="language" value="fr" title="Français" style="border:none; background:none; cursor:pointer; font-size: 1.2em; padding: 0;">🇫🇷</button>
+        <button type="submit" name="language" value="en" title="English" style="border:none; background:none; cursor:pointer; font-size: 1.2em; padding: 0;">🇬🇧</button>
+        <button type="submit" name="language" value="es" title="Español" style="border:none; background:none; cursor:pointer; font-size: 1.2em; padding: 0;">🇪🇸</button>
+    </form>
     <a class="pill" href="tel:+68940814848">📞 Appeler pour RDV</a>
     <a class="pill" href="mailto:docteur@bronstein.fr">✉️ Envoyer un message</a>
     <a class="pill" href="https://www.maiia.com/gastro-enterologue-et-hepatologue/98714-papeete/bronstein-jean-ariel" target="_blank" rel="noreferrer">🗓️ Réserver en ligne (Maiia)</a>
@@ -127,5 +134,7 @@
     </div>
     <div class="footer-note">© 2025 Dr. Jean-Ariel Bronstein — Clinique Paofai, Papeete</div>
   </footer>
+
+  {% include "core/includes/chatbot.html" %}
 </body>
 </html>

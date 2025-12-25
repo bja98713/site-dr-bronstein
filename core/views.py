@@ -1,8 +1,12 @@
 """Site pages for Dr Bronstein."""
 
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.utils.translation import gettext_lazy as _
+from django.views.decorators.csrf import csrf_exempt
+import json
+import unicodedata
 from .forms import ContactForm
 
 
@@ -986,7 +990,8 @@ GUIDES = [
 ]
 
 
-FAQS = [
+FAQS_FR = [
+	{"q": "Comment prendre rendez-vous ?", "a": "Vous pouvez prendre rendez-vous par téléphone au 40 81 48 48, sur Maiia, ou via le formulaire de contact sur le site."},
 	{"q": "Dois-je être à jeun avant une endoscopie ?", "a": "Oui, en général 6h sans manger et 2h sans boire de liquide clair, sauf consigne différente."},
 	{"q": "Puis-je conduire après une anesthésie ?", "a": "Non, prévoyez un accompagnant. Ne conduisez pas ni ne signez de documents importants le jour même."},
 	{"q": "Quels traitements dois-je arrêter avant une coloscopie ?", "a": "Aspirine, anticoagulants ou antiagrégants peuvent nécessiter un ajustement : demandez un avis personnalisé."},
@@ -994,6 +999,7 @@ FAQS = [
 	{"q": "Quand consulter en urgence ?", "a": "Fièvre élevée, sang dans les selles, douleurs abdominales intenses, vomissements répétés : appelez ou rendez-vous aux urgences."},
 	{"q": "Faut-il une ordonnance pour consulter ?", "a": "Il est préférable d'avoir un courrier de votre médecin traitant pour respecter le parcours de soins et être mieux remboursé."},
 	{"q": "Le médecin est-il conventionné ?", "a": "Oui, le Dr Bronstein est conventionné et accepte le tiers payant."},
+	{"q": "Quels sont les horaires de consultation ?", "a": "Le cabinet est ouvert du lundi au vendredi de 7h00 à 17h00, et le samedi de 8h30 à 12h00."},
 	{"q": "Comment se passe le paiement ?", "a": "Le règlement se fait sur place par chèque, espèces ou carte bancaire. Le tiers payant est possible selon votre couverture."},
 	{"q": "Où se garer pour venir au cabinet ?", "a": "Des parkings publics sont disponibles à proximité de l'immeuble Air France (parking Tarahoi ou front de mer)."},
 	{"q": "Les enfants sont-ils pris en charge ?", "a": "Le Dr Bronstein reçoit les adultes et adolescents. Pour les jeunes enfants, un pédiatre gastro-entérologue est recommandé."},
@@ -1012,8 +1018,120 @@ FAQS = [
 	{"q": "Y a-t-il des risques à passer une coloscopie ?", "a": "Les risques (perforation, hémorragie) sont très rares. Le bénéfice du dépistage du cancer colorectal est largement supérieur."},
 	{"q": "Quelle alimentation en cas de diverticules ?", "a": "En dehors des crises, une alimentation riche en fibres est recommandée. En cas de crise (diverticulite), un régime sans résidus est prescrit."},
 	{"q": "Dois-je arrêter de boire de l'eau avant l'examen ?", "a": "L'arrêt des liquides clairs (eau, thé, café sans lait) est généralement demandé 2 heures avant l'anesthésie."},
+	{"q": "C'est quoi des hémorroïdes ?", "a": "Ce sont des veines dilatées au niveau de l'anus. Elles peuvent saigner ou être douloureuses. Le traitement est souvent médical (crèmes, veinotoniques) ou instrumental."},
+	{"q": "Quelle différence entre fissure et hémorroïdes ?", "a": "La fissure est une petite coupure très douloureuse au passage des selles, alors que les hémorroïdes sont des gonflements veineux qui peuvent saigner mais sont moins souvent douloureux."},
+	{"q": "C'est quoi le syndrome de l'intestin irritable ?", "a": "C'est un trouble fonctionnel fréquent associant douleurs abdominales et troubles du transit (diarrhée/constipation), sans gravité mais gênant."},
+	{"q": "Faut-il manger sans gluten ?", "a": "Uniquement si vous avez une maladie coeliaque prouvée ou une sensibilité. Un régime sans gluten strict est contraignant et ne doit pas être fait sans avis médical."},
+	{"q": "Comment savoir si je suis intolérant au lactose ?", "a": "Les symptômes sont ballonnements et diarrhée après avoir bu du lait. Un test respiratoire peut confirmer le diagnostic."},
+	{"q": "Sang rouge ou noir dans les selles ?", "a": "Du sang rouge vient souvent de l'anus (hémorroïdes). Du sang noir (méléna) signale un saignement plus haut (estomac) et est une urgence."},
+	{"q": "Quels aliments éviter pour le reflux ?", "a": "Évitez le café, l'alcool, les épices, les graisses, le chocolat et les boissons gazeuses. Ne vous couchez pas juste après le repas."},
+	{"q": "A quoi sert le Fibroscan ?", "a": "C'est un appareil qui mesure l'élasticité du foie pour évaluer la fibrose (cicatrices) sans faire de biopsie. C'est indolore et rapide."},
+	{"q": "Les probiotiques sont-ils utiles ?", "a": "Ils peuvent aider dans certaines situations (après antibiotiques, intestin irritable) mais leur efficacité dépend des souches et des personnes."},
+	{"q": "Comment attrape-t-on l'hépatite B ou C ?", "a": "Principalement par le sang (matériel non stérile) ou les rapports sexuels non protégés (surtout hépatite B). Il existe un vaccin efficace contre l'hépatite B."},
+	{"q": "C'est quoi la maladie de Crohn ?", "a": "C'est une maladie inflammatoire chronique de l'intestin (MICI) qui peut toucher tout le tube digestif. Elle se manifeste par des douleurs, diarrhées et fatigue."},
+	{"q": "C'est quoi la rectocolite hémorragique (RCH) ?", "a": "C'est une maladie inflammatoire chronique qui ne touche que le rectum et le côlon. Elle provoque souvent des diarrhées sanglantes."},
+	{"q": "Qu'est-ce qu'une cirrhose ?", "a": "C'est une maladie du foie où le tissu sain est remplacé par du tissu cicatriciel (fibrose), empêchant le foie de fonctionner. Les causes principales sont l'alcool et les virus."},
+	{"q": "C'est quoi une manométrie anorectale ?", "a": "C'est un examen qui mesure les pressions au niveau de l'anus et du rectum pour explorer la constipation ou l'incontinence. C'est indolore."},
+	{"q": "A quoi sert une entéroscopie ?", "a": "C'est une endoscopie profonde de l'intestin grêle, réalisée sous anesthésie générale, pour explorer ou traiter des lésions inaccessibles aux endoscopes classiques."},
+	{"q": "Qu'est-ce qu'un ulcère à l'estomac ?", "a": "C'est une plaie dans la paroi de l'estomac ou du duodénum, souvent causée par la bactérie Helicobacter pylori ou la prise d'anti-inflammatoires."},
+	{"q": "Le cancer du côlon est-il héréditaire ?", "a": "Il existe des formes héréditaires (syndrome de Lynch, polypose), mais la plupart sont sporadiques. Le dépistage est crucial dès 50 ans ou avant en cas d'antécédents."},
 ]
 
+FAQS_EN = [
+    {"q": "How to make an appointment?", "a": "You can make an appointment by phone at 40 81 48 48, on Maiia, or via the contact form on the website."},
+    {"q": "Do I need to be fasting before an endoscopy?", "a": "Yes, usually 6 hours without eating and 2 hours without drinking clear liquids, unless otherwise instructed."},
+    {"q": "Can I drive after anesthesia?", "a": "No, bring a companion. Do not drive or sign important documents on the same day."},
+    {"q": "What treatments should I stop before a colonoscopy?", "a": "Aspirin, anticoagulants, or antiplatelet agents may need adjustment: ask for personalized advice."},
+    {"q": "How long does a colonoscopy take?", "a": "About 20 to 30 minutes, plus preparation and recovery time."},
+    {"q": "When to consult in an emergency?", "a": "High fever, blood in stool, intense abdominal pain, repeated vomiting: call or go to the emergency room."},
+    {"q": "Do I need a prescription to consult?", "a": "It is preferable to have a referral letter from your GP to respect the care pathway and be better reimbursed."},
+    {"q": "Is the doctor contracted?", "a": "Yes, Dr. Bronstein is contracted and accepts third-party payment."},
+    {"q": "What are the consultation hours?", "a": "The office is open Monday to Friday from 7:00 AM to 5:00 PM, and Saturday from 8:30 AM to 12:00 PM."},
+    {"q": "How does payment work?", "a": "Payment is made on-site by check, cash, or credit card. Third-party payment is possible depending on your coverage."},
+    {"q": "Where to park to come to the office?", "a": "Public parking lots are available near the Air France building (Tarahoi or waterfront parking)."},
+    {"q": "Are children treated?", "a": "Dr. Bronstein treats adults and adolescents. For young children, a pediatric gastroenterologist is recommended."},
+    {"q": "Can I get a sick note?", "a": "A sick note can be issued on the day of the exam (colonoscopy/gastroscopy) if necessary."},
+    {"q": "How long before getting the results?", "a": "The report is given immediately after the exam. Biopsy results take about 10 to 15 days."},
+    {"q": "What if I forgot my preparation?", "a": "Contact the secretariat as soon as possible. Poor preparation may require cancelling and rescheduling the exam."},
+    {"q": "Is the office accessible to people with reduced mobility?", "a": "Yes, the building has elevators and is accessible to people with reduced mobility."},
+    {"q": "Can I come accompanied?", "a": "Yes, it is even mandatory to leave after general anesthesia or sedation."},
+    {"q": "What is pH-metry?", "a": "It is an exam that measures acidity in the esophagus for 24 hours using a thin nasal probe to diagnose reflux."},
+    {"q": "Is pH-metry painful?", "a": "The exam is uncomfortable during probe placement but not painful. You quickly get used to the probe."},
+    {"q": "What is a video capsule?", "a": "It is a pill containing a camera that you swallow to explore the small intestine, an area inaccessible to standard endoscopes."},
+    {"q": "Can I have a gastroscopy and colonoscopy at the same time?", "a": "Yes, it is common. This allows both exams to be performed under the same anesthesia."},
+    {"q": "What is Helicobacter pylori?", "a": "It is a bacterium present in the stomach that can cause gastritis and ulcers. It is treated with antibiotics."},
+    {"q": "Can stress cause stomach pain?", "a": "Yes, stress influences the digestive system and can aggravate irritable bowel syndrome or heartburn."},
+    {"q": "What are the symptoms of a colon polyp?", "a": "Most polyps cause no symptoms, hence the importance of screening by colonoscopy before they degenerate."},
+    {"q": "Are there risks to having a colonoscopy?", "a": "Risks (perforation, bleeding) are very rare. The benefit of colorectal cancer screening far outweighs them."},
+    {"q": "What diet for diverticula?", "a": "Outside of flare-ups, a high-fiber diet is recommended. During a flare-up (diverticulitis), a low-residue diet is prescribed."},
+    {"q": "Should I stop drinking water before the exam?", "a": "Stopping clear liquids (water, tea, coffee without milk) is generally required 2 hours before anesthesia."},
+    {"q": "What are hemorrhoids?", "a": "They are dilated veins in the anus. They can bleed or be painful. Treatment is often medical (creams, venotonics) or instrumental."},
+    {"q": "What is the difference between a fissure and hemorrhoids?", "a": "A fissure is a very painful small cut during bowel movements, while hemorrhoids are venous swellings that may bleed but are less often painful."},
+    {"q": "What is irritable bowel syndrome?", "a": "It is a frequent functional disorder associating abdominal pain and transit disorders (diarrhea/constipation), not serious but bothersome."},
+    {"q": "Should I eat gluten-free?", "a": "Only if you have proven celiac disease or sensitivity. A strict gluten-free diet is restrictive and should not be done without medical advice."},
+    {"q": "How do I know if I am lactose intolerant?", "a": "Symptoms are bloating and diarrhea after drinking milk. A breath test can confirm the diagnosis."},
+    {"q": "Red or black blood in stool?", "a": "Red blood often comes from the anus (hemorrhoids). Black blood (melena) signals bleeding higher up (stomach) and is an emergency."},
+    {"q": "What foods to avoid for reflux?", "a": "Avoid coffee, alcohol, spices, fats, chocolate, and carbonated drinks. Do not lie down right after a meal."},
+    {"q": "What is Fibroscan used for?", "a": "It is a device that measures liver elasticity to assess fibrosis (scarring) without a biopsy. It is painless and fast."},
+    {"q": "Are probiotics useful?", "a": "They can help in certain situations (after antibiotics, irritable bowel) but their effectiveness depends on the strains and individuals."},
+    {"q": "How do you catch hepatitis B or C?", "a": "Mainly through blood (non-sterile equipment) or unprotected sex (especially hepatitis B). There is an effective vaccine against hepatitis B."},
+    {"q": "What is Crohn's disease?", "a": "It is a chronic inflammatory bowel disease (IBD) that can affect the entire digestive tract. It manifests as pain, diarrhea, and fatigue."},
+    {"q": "What is ulcerative colitis?", "a": "It is a chronic inflammatory disease that affects only the rectum and colon. It often causes bloody diarrhea."},
+    {"q": "What is cirrhosis?", "a": "It is a liver disease where healthy tissue is replaced by scar tissue (fibrosis), preventing the liver from functioning. Main causes are alcohol and viruses."},
+    {"q": "What is anorectal manometry?", "a": "It is an exam that measures pressures in the anus and rectum to explore constipation or incontinence. It is painless."},
+    {"q": "What is enteroscopy used for?", "a": "It is a deep endoscopy of the small intestine, performed under general anesthesia, to explore or treat lesions inaccessible to standard endoscopes."},
+    {"q": "What is a stomach ulcer?", "a": "It is a sore in the lining of the stomach or duodenum, often caused by the bacterium Helicobacter pylori or anti-inflammatory drugs."},
+    {"q": "Is colon cancer hereditary?", "a": "There are hereditary forms (Lynch syndrome, polyposis), but most are sporadic. Screening is crucial from age 50 or earlier if there is a family history."},
+]
+
+FAQS_ES = [
+    {"q": "¿Cómo pedir cita?", "a": "Puede pedir cita por teléfono al 40 81 48 48, en Maiia, o a través del formulario de contacto en el sitio web."},
+    {"q": "¿Debo estar en ayunas antes de una endoscopia?", "a": "Sí, generalmente 6 horas sin comer y 2 horas sin beber líquidos claros, salvo indicación contraria."},
+    {"q": "¿Puedo conducir después de la anestesia?", "a": "No, venga acompañado. No conduzca ni firme documentos importantes el mismo día."},
+    {"q": "¿Qué tratamientos debo suspender antes de una colonoscopia?", "a": "Aspirina, anticoagulantes o antiagregantes pueden requerir ajuste: pida consejo personalizado."},
+    {"q": "¿Cuánto dura una colonoscopia?", "a": "Unos 20 a 30 minutos, más el tiempo de preparación y recuperación."},
+    {"q": "¿Cuándo consultar de urgencia?", "a": "Fiebre alta, sangre en las heces, dolor abdominal intenso, vómitos repetidos: llame o vaya a urgencias."},
+    {"q": "¿Necesito una receta para consultar?", "a": "Es preferible tener una carta de derivación de su médico de cabecera para respetar el recorrido de atención y obtener un mejor reembolso."},
+    {"q": "¿El médico está conveniado?", "a": "Sí, el Dr. Bronstein está conveniado y acepta el pago de terceros."},
+    {"q": "¿Cuáles son los horarios de consulta?", "a": "El consultorio está abierto de lunes a viernes de 7:00 a 17:00, y el sábado de 8:30 a 12:00."},
+    {"q": "¿Cómo funciona el pago?", "a": "El pago se realiza en el lugar con cheque, efectivo o tarjeta bancaria. El pago de terceros es posible según su cobertura."},
+    {"q": "¿Dónde aparcar para venir al consultorio?", "a": "Hay aparcamientos públicos disponibles cerca del edificio Air France (aparcamiento Tarahoi o frente al mar)."},
+    {"q": "¿Se atiende a niños?", "a": "El Dr. Bronstein atiende a adultos y adolescentes. Para niños pequeños, se recomienda un gastroenterólogo pediatra."},
+    {"q": "¿Puedo obtener una baja laboral?", "a": "Se puede emitir una baja laboral el día del examen (colonoscopia/gastroscopia) si es necesario."},
+    {"q": "¿Cuánto tiempo tardan los resultados?", "a": "El informe se entrega inmediatamente después del examen. Los resultados de las biopsias tardan unos 10 a 15 días."},
+    {"q": "¿Qué pasa si olvidé mi preparación?", "a": "Contacte a la secretaría lo antes posible. Una mala preparación puede obligar a cancelar y reprogramar el examen."},
+    {"q": "¿El consultorio es accesible para personas con movilidad reducida?", "a": "Sí, el edificio dispone de ascensores y es accesible para personas con movilidad reducida."},
+    {"q": "¿Puedo venir acompañado?", "a": "Sí, es incluso obligatorio para salir después de una anestesia general o sedación."},
+    {"q": "¿En qué consiste una pH-metría?", "a": "Es un examen que mide la acidez en el esófago durante 24h mediante una fina sonda nasal, para diagnosticar reflujo."},
+    {"q": "¿Es dolorosa la pH-metría?", "a": "El examen es poco agradable durante la colocación de la sonda, pero no es doloroso. Uno se acostumbra rápidamente a la presencia de la sonda."},
+    {"q": "¿Qué es una videocápsula?", "a": "Es una cápsula que contiene una cámara que se traga para explorar el intestino delgado, zona inaccesible a los endoscopios clásicos."},
+    {"q": "¿Se pueden hacer una gastroscopia y una colonoscopia al mismo tiempo?", "a": "Sí, es frecuente. Esto permite realizar ambos exámenes bajo la misma anestesia."},
+    {"q": "¿Qué es el Helicobacter pylori?", "a": "Es una bacteria presente en el estómago que puede causar gastritis y úlceras. Se trata con antibióticos."},
+    {"q": "¿El estrés puede causar dolor de estómago?", "a": "Sí, el estrés influye en el sistema digestivo y puede agravar el síndrome del intestino irritable o la acidez estomacal."},
+    {"q": "¿Cuáles son los síntomas de un pólipo en el colon?", "a": "La mayoría de los pólipos no dan síntomas, de ahí la importancia del cribado por colonoscopia antes de que degeneren."},
+    {"q": "¿Hay riesgos al hacerse una colonoscopia?", "a": "Los riesgos (perforación, hemorragia) son muy raros. El beneficio del cribado del cáncer colorrectal es muy superior."},
+    {"q": "¿Qué dieta en caso de divertículos?", "a": "Fuera de las crisis, se recomienda una dieta rica en fibra. En caso de crisis (diverticulitis), se prescribe una dieta sin residuos."},
+    {"q": "¿Debo dejar de beber agua antes del examen?", "a": "Generalmente se pide dejar los líquidos claros (agua, té, café sin leche) 2 horas antes de la anestesia."},
+    {"q": "¿Qué son las hemorroides?", "a": "Son venas dilatadas en el ano. Pueden sangrar o ser dolorosas. El tratamiento suele ser médico (cremas, venotónicos) o instrumental."},
+    {"q": "¿Qué diferencia hay entre fisura y hemorroides?", "a": "La fisura es un pequeño corte muy doloroso al defecar, mientras que las hemorroides son hinchazones venosas que pueden sangrar pero son menos dolorosas."},
+    {"q": "¿Qué es el síndrome del intestino irritable?", "a": "Es un trastorno funcional frecuente que asocia dolor abdominal y trastornos del tránsito (diarrea/estreñimiento), sin gravedad pero molesto."},
+    {"q": "¿Debo comer sin gluten?", "a": "Solo si tiene enfermedad celíaca probada o sensibilidad. Una dieta estricta sin gluten es restrictiva y no debe hacerse sin consejo médico."},
+    {"q": "¿Cómo saber si soy intolerante a la lactosa?", "a": "Los síntomas son hinchazón y diarrea después de beber leche. Una prueba de aliento puede confirmar el diagnóstico."},
+    {"q": "¿Sangre roja o negra en las heces?", "a": "La sangre roja suele venir del ano (hemorroides). La sangre negra (melena) indica un sangrado más arriba (estómago) y es una urgencia."},
+    {"q": "¿Qué alimentos evitar para el reflujo?", "a": "Evite café, alcohol, especias, grasas, chocolate y bebidas gaseosas. No se acueste justo después de comer."},
+    {"q": "¿Para qué sirve el Fibroscan?", "a": "Es un aparato que mide la elasticidad del hígado para evaluar la fibrosis (cicatrices) sin hacer biopsia. Es indoloro y rápido."},
+    {"q": "¿Son útiles los probióticos?", "a": "Pueden ayudar en ciertas situaciones (después de antibióticos, intestino irritable) pero su eficacia depende de las cepas y las personas."},
+    {"q": "¿Cómo se contrae la hepatitis B o C?", "a": "Principalmente por sangre (material no estéril) o relaciones sexuales sin protección (sobre todo hepatitis B). Existe una vacuna eficaz contra la hepatitis B."},
+    {"q": "¿Qué es la enfermedad de Crohn?", "a": "Es una enfermedad inflamatoria crónica del intestino (EII) que puede afectar todo el tubo digestivo. Se manifiesta por dolor, diarrea y fatiga."},
+    {"q": "¿Qué es la colitis ulcerosa?", "a": "Es una enfermedad inflamatoria crónica que solo afecta el recto y el colon. A menudo provoca diarrea con sangre."},
+    {"q": "¿Qué es una cirrosis?", "a": "Es una enfermedad del hígado donde el tejido sano es reemplazado por tejido cicatricial (fibrosis), impidiendo que el hígado funcione. Las causas principales son el alcohol y los virus."},
+    {"q": "¿Qué es una manometría anorrectal?", "a": "Es un examen que mide las presiones en el ano y el recto para explorar el estreñimiento o la incontinencia. Es indoloro."},
+    {"q": "¿Para qué sirve una enteroscopia?", "a": "Es una endoscopia profunda del intestino delgado, realizada bajo anestesia general, para explorar o tratar lesiones inaccesibles a los endoscopios clásicos."},
+    {"q": "¿Qué es una úlcera de estómago?", "a": "Es una llaga en la pared del estómago o del duodeno, a menudo causada por la bacteria Helicobacter pylori o la toma de antiinflamatorios."},
+    {"q": "¿El cáncer de colon es hereditario?", "a": "Existen formas hereditarias (síndrome de Lynch, poliposis), pero la mayoría son esporádicos. El cribado es crucial desde los 50 años o antes si hay antecedentes."},
+]
+
+FAQS = FAQS_FR
 
 SYMPTOM_TAGS = {
 	"brûlures / reflux": ["brulure-estomac", "reflux-enceinte"],
@@ -1027,15 +1145,15 @@ SYMPTOM_TAGS = {
 TEAM = [
 	{
 		"name": "Dr Jean-Ariel Bronstein",
-		"role": "Professeur agrégé du Val-de-Grâce",
-		"focus": "Gastro-entérologue, Oncologie digestive, endoscopies interventionnelles, échographie abdominale",
+		"role": _("Professeur agrégé du Val-de-Grâce"),
+		"focus": _("Gastro-entérologue, Oncologie digestive, endoscopies interventionnelles, échographie abdominale"),
 		"contact": "docteur@bronstein.fr",
 		"photo": "img/dr-bronstein.jpg",
 	},
 	{
 		"name": "Tania Mauri",
-		"role": "Secrétaire médicale",
-		"focus": "Accueil, rendez-vous, préparation des examens",
+		"role": _("Secrétaire médicale"),
+		"focus": _("Accueil, rendez-vous, préparation des examens"),
 		"contact": "secretaire@bronstein.fr",
 		"photo": "img/tania-mauri.jpg",
 	},
@@ -1053,7 +1171,7 @@ CONTACT = {
 		"maps": "https://maps.google.com/?q=Clinique+Paofai+Tahiti",
 	},
 	"consult": {
-		"title": "Consultations",
+		"title": _("Consultations"),
 		"address": "Immeuble Air France — rue LAGARDE — 4e étage (en face de GEMO), Papeete",
 		"phone": "40 81 48 48 / 87 345 372",
 		"maps": "https://maps.google.com/?q=Immeuble+Air+France+Papeete",
@@ -1064,23 +1182,23 @@ CONTACT = {
 
 HOME_TILES = [
 	{
-		"title": "Prendre rendez-vous",
-		"text": "Téléphone ou formulaire rapide pour planifier une consultation ou une endoscopie.",
-		"action": "Appeler le cabinet",
+		"title": _("Prendre rendez-vous"),
+		"text": _("Téléphone ou formulaire rapide pour planifier une consultation ou une endoscopie."),
+		"action": _("Appeler le cabinet"),
 		"link": "tel:+68940814848",
 		"variant": "primary",
 	},
 	{
-		"title": "Préparer mon examen",
-		"text": "Consignes claires pour coloscopie, fibroscopie et examens digestifs.",
-		"action": "Consignes coloscopie",
+		"title": _("Préparer mon examen"),
+		"text": _("Consignes claires pour coloscopie, fibroscopie et examens digestifs."),
+		"action": _("Consignes coloscopie"),
 		"link": "/guides/#preparation-coloscopie",
 		"variant": "outline",
 	},
 	{
-		"title": "Conseils digestifs",
-		"text": "Reflux, diarrhée chronique, foie gras : que faire avant de consulter ?",
-		"action": "Voir les articles",
+		"title": _("Conseils digestifs"),
+		"text": _("Reflux, diarrhée chronique, foie gras : que faire avant de consulter ?"),
+		"action": _("Voir les articles"),
 		"link": "/blog/",
 		"variant": "ghost",
 	},
@@ -1090,7 +1208,7 @@ HOME_TILES = [
 def home(request):
 	context = {
 		"hero": {
-			"title": "Je viens consulter, comment ça se passe ?",
+			"title": _("Je viens consulter, comment ça se passe ?"),
 			"subtitle": "",
 			"cta_call": "tel:+68940814848",
 			"cta_message": "mailto:bronstein@mail.pf",
@@ -1201,4 +1319,307 @@ def contact_view(request):
     }
     return render(request, "core/contact.html", context)
 
-# Create your views here.
+
+import re
+import difflib
+
+def normalize_text(text):
+    """Normalize text to remove accents, lowercase, and remove punctuation."""
+    # Remove accents
+    text = ''.join(c for c in unicodedata.normalize('NFD', text)
+                  if unicodedata.category(c) != 'Mn')
+    # Lowercase
+    text = text.lower()
+    # Replace punctuation with space
+    text = re.sub(r'[^\w\s]', ' ', text)
+    return text
+
+@csrf_exempt
+def chatbot_api(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            raw_message = data.get('message', '')
+            user_message = normalize_text(raw_message)
+            request_type = data.get('type', 'normal') # 'normal' or 'openevidence'
+            
+            if request_type == 'openevidence':
+                # Simulation of OpenEvidence API call
+                # In a real scenario, you would call the OpenEvidence API here
+                
+                response_text = "D'après les recommandations actuelles, ce sujet nécessite une évaluation clinique approfondie."
+                
+                if any(w in user_message for w in ['risque', 'danger', 'complication', 'risk', 'perforation', 'hemorragie']):
+                     response_text = "Les études montrent une incidence très faible de complications majeures (< 0.1%). Le rapport bénéfice/risque reste très favorable pour le dépistage."
+                elif any(w in user_message for w in ['traitement', 'soigner', 'medicament', 'treatment', 'guerir']):
+                     response_text = "Les protocoles actuels préconisent une approche graduelle, débutant souvent par des mesures hygiéno-diététiques avant d'envisager un traitement médicamenteux."
+                elif any(w in user_message for w in ['symptome', 'douleur', 'signe', 'symptom', 'mal', 'ventre']):
+                     response_text = "La présentation clinique peut être variable. L'examen clinique et l'endoscopie sont souvent nécessaires pour confirmer le diagnostic et exclure d'autres pathologies."
+                elif any(w in user_message for w in ['prepa', 'boire', 'manger', 'regime']):
+                     response_text = "La qualité de la préparation est le facteur prédictif le plus important pour la réussite de l'examen. Il est crucial de suivre le protocole à la lettre."
+
+                return JsonResponse({
+                    'response': f"Voici une réponse complémentaire basée sur les données médicales : \n\n{response_text}\n\nVeuillez consulter votre médecin pour un avis personnalisé."
+                })
+            
+            print(f"Chatbot received: {raw_message} -> {user_message}")
+
+            if not user_message:
+                return JsonResponse({'response': "Je n'ai pas compris votre message."})
+
+            # Language detection
+            words = user_message.split()
+            
+            # Markers
+            en_markers = {
+                'the', 'this', 'that', 'these', 'those', 'with', 'for', 'from', 'about', 
+                'you', 'your', 'my', 'mine', 'we', 'our', 'they', 'their',
+                'have', 'has', 'had', 'are', 'was', 'were', 'will', 'would', 'can', 'could', 'should',
+                'what', 'where', 'when', 'how', 'why', 'who', 'which',
+                'hello', 'hi', 'thanks', 'please', 'appointment', 'pain', 'doctor', 'help', 'morning', 'evening',
+                'do', 'does', 'did', 'is', 'am', 'need', 'want'
+            }
+            
+            es_markers = {
+                'el', 'los', 'las', 'un', 'una', 'unos', 'unas', 
+                'es', 'son', 'fue', 'fueron', 'estoy', 'estas', 'esta', 'estamos', 'estan',
+                'yo', 'usted', 'nosotros', 'vosotros', 'ellos', 'ellas',
+                'que', 'como', 'donde', 'cuando', 'porque', 'quien', 'cual',
+                'por', 'para', 'con', 'del', 'al', 'sin',
+                'hola', 'gracias', 'cita', 'dolor', 'medico', 'ayuda', 'buenos', 'dias', 'tarde', 'noche',
+                'tengo', 'necesito', 'quiero'
+            }
+            
+            fr_markers = {
+                'le', 'les', 'des', 'du', 'au', 'aux', 
+                'est', 'sont', 'suis', 'etes', 'etait', 'etaient',
+                'je', 'nous', 'vous', 'ils', 'elles', 'mon', 'ma', 'mes', 'ton', 'ta', 'tes', 'son', 'sa', 'ses', 'notre', 'votre',
+                'quoi', 'comment', 'quand', 'pourquoi', 'quel', 'quelle', 'quels', 'quelles',
+                'dans', 'sur', 'sous', 'avec', 'sans', 'pour', 'par',
+                'bonjour', 'bonsoir', 'merci', 'rendez-vous', 'rdv', 'douleur', 'medecin', 'aide',
+                'ai', 'besoin', 'veux', 'voudrais'
+            }
+
+            score_en = sum(1 for w in words if w in en_markers)
+            score_es = sum(1 for w in words if w in es_markers)
+            score_fr = sum(1 for w in words if w in fr_markers)
+
+            # Default to FR
+            lang = 'fr'
+            if score_en > score_fr and score_en > score_es:
+                lang = 'en'
+            elif score_es > score_fr and score_es > score_en:
+                lang = 'es'
+            
+            print(f"Detected language: {lang} (FR:{score_fr}, EN:{score_en}, ES:{score_es})")
+
+            # Select data based on language
+            if lang == 'en':
+                current_faqs = FAQS_EN
+                greeting_response = "Hello! How can I help you?"
+                fallback_response = "I'm not sure I understand. You can contact us at 40 81 48 48 or check our FAQ page."
+                stop_words = {
+                    'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'up', 'about', 'into', 'over', 'after',
+                    'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'shall', 'should', 'can', 'could', 'may', 'might', 'must',
+                    'i', 'you', 'he', 'she', 'it', 'we', 'they', 'my', 'your', 'his', 'her', 'its', 'our', 'their', 'me', 'him', 'us', 'them',
+                    'what', 'which', 'who', 'whom', 'whose', 'where', 'when', 'why', 'how',
+                    'this', 'that', 'these', 'those', 'here', 'there',
+                    'please', 'thanks', 'thank', 'hello', 'hi'
+                }
+                # English Synonyms
+                synonyms = {
+                    "rdv": "appointment",
+                    "dr": "doctor",
+                    "cost": "payment",
+                    "price": "payment",
+                    "pay": "payment",
+                    "eat": "fasting",
+                    "drink": "fasting",
+                    "food": "fasting",
+                    "meal": "fasting",
+                    "hurt": "pain",
+                    "ache": "pain",
+                    "stomach": "abdominal",
+                    "belly": "abdominal",
+                    "location": "park",
+                    "address": "park",
+                    "parking": "park",
+                    "result": "results",
+                    "poop": "stool",
+                    "burn": "reflux",
+                    "acid": "reflux",
+                    "virus": "hepatitis",
+                    "alcohol": "cirrhosis",
+                    "hours": "hours",
+                    "open": "hours",
+                    "close": "hours",
+                    "time": "hours",
+                }
+            elif lang == 'es':
+                current_faqs = FAQS_ES
+                greeting_response = "¡Hola! ¿En qué puedo ayudarle?"
+                fallback_response = "No estoy seguro de entender. Puede contactarnos al 40 81 48 48 o consultar nuestra página de preguntas frecuentes."
+                stop_words = {
+                    'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'y', 'o', 'pero', 'si', 'no', 'en', 'a', 'de', 'del', 'al', 'por', 'para', 'con', 'sin', 'sobre',
+                    'es', 'son', 'fue', 'fueron', 'ser', 'estar', 'estoy', 'estas', 'esta', 'estamos', 'estan', 'haber', 'hay', 'tener', 'tengo', 'tienes', 'tiene', 'tenemos', 'tienen',
+                    'yo', 'tu', 'el', 'ella', 'nosotros', 'vosotros', 'ellos', 'ellas', 'mi', 'tu', 'su', 'nuestro', 'vuestro', 'me', 'te', 'le', 'nos', 'os', 'les',
+                    'que', 'quien', 'donde', 'cuando', 'como', 'porque', 'cual', 'cuales',
+                    'este', 'esta', 'estos', 'estas', 'ese', 'esa', 'esos', 'esas', 'aquel', 'aquella', 'aquellos', 'aquellas',
+                    'hola', 'gracias', 'por favor'
+                }
+                # Spanish Synonyms
+                synonyms = {
+                    "cita": "consulta",
+                    "dr": "medico",
+                    "doctor": "medico",
+                    "precio": "pago",
+                    "costo": "pago",
+                    "pagar": "pago",
+                    "comer": "ayunas",
+                    "beber": "ayunas",
+                    "comida": "ayunas",
+                    "alimentos": "ayunas",
+                    "doler": "dolor",
+                    "estomago": "abdominal",
+                    "barriga": "abdominal",
+                    "direccion": "aparcar",
+                    "ubicacion": "aparcar",
+                    "estacionamiento": "aparcar",
+                    "parking": "aparcar",
+                    "resultado": "resultados",
+                    "caca": "heces",
+                    "ardor": "reflujo",
+                    "acidez": "reflujo",
+                    "virus": "hepatitis",
+                    "alcohol": "cirrosis",
+                    "horas": "horarios",
+                    "abierto": "horarios",
+                    "cerrado": "horarios",
+                    "tiempo": "horarios",
+                }
+            else: # FR
+                current_faqs = FAQS_FR
+                greeting_response = "Bonjour ! Comment puis-je vous aider ?"
+                fallback_response = "Je ne suis pas sûr de comprendre. Vous pouvez nous contacter au 40 81 48 48 ou consulter notre page FAQ."
+                stop_words = {
+                    'le', 'la', 'les', 'de', 'du', 'des', 'un', 'une', 'est', 'il', 'elle', 'je', 'tu', 'nous', 'vous', 'ils', 'elles', 
+                    'a', 'au', 'aux', 'ce', 'cette', 'ces', 'mon', 'ma', 'mes', 'ton', 'ta', 'tes', 'son', 'sa', 'ses', 'notre', 'votre', 
+                    'leur', 'leurs', 'que', 'qui', 'quoi', 'ou', 'quand', 'comment', 'pourquoi', 'quel', 'quelle', 'quels', 'quelles', 
+                    'sur', 'sous', 'dans', 'par', 'pour', 'en', 'vers', 'avec', 'sans', 'y', 't', 'me', 'se', 'c', 'qu', 'j', 'l', 'n', 'd', 's', 'm',
+                    'cest', 'quest', 'qu est', 'c est', 'sont', 'suis', 'es', 'sommes', 'etes', 'ete', 'etait', 'etaient'
+                }
+                synonyms = {
+                    "rdv": "rendez-vous",
+                    "docteur": "medecin",
+                    "dr": "medecin",
+                    "prix": "paiement",
+                    "tarif": "paiement",
+                    "cout": "paiement",
+                    "argent": "paiement",
+                    "reglement": "paiement",
+                    "manger": "jeun",
+                    "boire": "jeun",
+                    "repas": "jeun",
+                    "nourriture": "jeun",
+                    "alcool": "jeun",
+                    "mal": "douleurs",
+                    "bide": "abdominale",
+                    "ventre": "abdominale",
+                    "estomac": "abdominale",
+                    "adresse": "garer",
+                    "localisation": "garer",
+                    "ou": "garer",
+                    "place": "garer",
+                    "parking": "garer",
+                    "resultat": "resultats",
+                    "biopsie": "biopsies",
+                    "lait": "lactose",
+                    "caca": "selles",
+                    "popo": "selles",
+                    "toilette": "selles",
+                    "fesses": "anus",
+                    "derriere": "anus",
+                    "brulure": "reflux",
+                    "remontee": "reflux",
+                    "acide": "reflux",
+                    "virus": "hepatite",
+                    "contamination": "hepatite",
+                    "mici": "crohn",
+                    "rch": "rectocolite",
+                    "alcool": "cirrhose",
+                    "fibrose": "cirrhose",
+                    "constipation": "manometrie",
+                    "incontinence": "manometrie",
+                    "heures": "horaires",
+                    "heure": "horaires",
+                    "ouverture": "horaires",
+                    "fermeture": "horaires",
+                }
+
+            # Basic greetings
+            if any(word in user_message.split() for word in ['bonjour', 'salut', 'hello', 'bonsoir', 'hi', 'hola', 'buenos', 'dias']):
+                 return JsonResponse({'response': greeting_response})
+
+            # Simple keyword matching
+            best_match = None
+            max_score = 0
+
+            for item in current_faqs:
+                question = normalize_text(item['q'])
+                
+                user_words = user_message.split()
+                # Apply synonyms
+                user_words = [synonyms.get(w, w) for w in user_words]
+                user_words_set = set(user_words)
+                
+                question_words = set(question.split())
+                
+                # 1. Exact matches
+                common_words = user_words_set.intersection(question_words)
+                meaningful_matches = [w for w in common_words if w not in stop_words and len(w) > 2]
+                score = len(meaningful_matches) * 10  # Exact matches are worth a lot more
+                
+                # 2. Fuzzy matches (handle typos)
+                for u_word in user_words_set:
+                    if u_word in stop_words or u_word in common_words or len(u_word) < 3:
+                        continue
+                    # Find close matches in question words
+                    matches = difflib.get_close_matches(u_word, question_words, n=1, cutoff=0.85)
+                    if matches:
+                        score += 5 # Fuzzy match is worth less
+                
+                if score > max_score:
+                    max_score = score
+                    best_match = item['a']
+            
+            print(f"Best match score: {max_score}")
+
+            response_data = {}
+            
+            if best_match and max_score >= 5: # Minimum score threshold
+                response_data['response'] = best_match
+            elif best_match and max_score > 0:
+                 response_data['response'] = best_match
+            else:
+                # Fallback to contact info if no match
+                response_data['response'] = fallback_response
+
+            # Check if medical query to suggest OpenEvidence
+            medical_keywords = {
+                'maladie', 'traitement', 'symptome', 'douleur', 'cancer', 'examen', 'medicament', 'effets', 'risques',
+                'disease', 'treatment', 'symptom', 'pain', 'exam', 'drug', 'risk',
+                'enfermedad', 'tratamiento', 'sintoma', 'dolor', 'examen', 'riesgo',
+                'crohn', 'rch', 'rectocolite', 'hepatite', 'cirrhose', 'ulcere', 'polype', 'diverticule'
+            }
+            
+            if any(kw in user_message for kw in medical_keywords):
+                response_data['suggest_openevidence'] = True
+                
+            return JsonResponse(response_data)
+
+        except Exception as e:
+            print(e)
+            return JsonResponse({'response': "Une erreur est survenue."}, status=500)
+    
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+

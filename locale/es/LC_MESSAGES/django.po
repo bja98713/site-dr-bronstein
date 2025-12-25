@@ -1,0 +1,96 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-25 02:17+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
+
+#: bronstein_site/settings.py:106
+msgid "Français"
+msgstr ""
+
+#: bronstein_site/settings.py:107
+msgid "English"
+msgstr ""
+
+#: bronstein_site/settings.py:108
+msgid "Español"
+msgstr ""
+
+#: core/views.py:1031
+msgid "Professeur agrégé du Val-de-Grâce"
+msgstr "Profesor Agregado de Val-de-Grâce"
+
+#: core/views.py:1032
+msgid ""
+"Gastro-entérologue, Oncologie digestive, endoscopies interventionnelles, "
+"échographie abdominale"
+msgstr "Gastroenterólogo, Oncología Digestiva, Endoscopia Intervencionista, Ecografía Abdominal"
+
+#: core/views.py:1038
+msgid "Secrétaire médicale"
+msgstr "Secretaria médica"
+
+#: core/views.py:1039
+msgid "Accueil, rendez-vous, préparation des examens"
+msgstr "Recepción, citas, preparación de exámenes"
+
+#: core/views.py:1057
+msgid "Consultations"
+msgstr "Consultas"
+
+#: core/views.py:1068
+msgid "Prendre rendez-vous"
+msgstr "Pedir cita"
+
+#: core/views.py:1069
+msgid ""
+"Téléphone ou formulaire rapide pour planifier une consultation ou une "
+"endoscopie."
+msgstr "Teléfono o formulario rápido para programar una consulta o endoscopia."
+
+#: core/views.py:1070
+msgid "Appeler le cabinet"
+msgstr "Llamar al consultorio"
+
+#: core/views.py:1075
+msgid "Préparer mon examen"
+msgstr "Preparar mi examen"
+
+#: core/views.py:1076
+msgid "Consignes claires pour coloscopie, fibroscopie et examens digestifs."
+msgstr "Instrucciones claras para colonoscopia, gastroscopia y exámenes digestivos."
+
+#: core/views.py:1077
+msgid "Consignes coloscopie"
+msgstr "Instrucciones colonoscopia"
+
+#: core/views.py:1082
+msgid "Conseils digestifs"
+msgstr "Consejos digestivos"
+
+#: core/views.py:1083
+msgid "Reflux, diarrhée chronique, foie gras : que faire avant de consulter ?"
+msgstr "Reflujo, diarrea crónica, hígado graso: ¿qué hacer antes de consultar?"
+
+#: core/views.py:1084
+msgid "Voir les articles"
+msgstr "Ver artículos"
+
+#: core/views.py:1094
+msgid "Je viens consulter, comment ça se passe ?"
+msgstr "Vengo a consulta, ¿cómo funciona?"
