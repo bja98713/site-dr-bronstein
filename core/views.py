@@ -989,6 +989,22 @@ GUIDES = [
 		],
 		"pdf": "",
 	},
+	{
+		"slug": "regime-sans-residu",
+		"title": "Régime sans résidu",
+		"summary": "Repères dans la prescription d'un régime sans résidu (strict ou élargi).",
+		"steps": [
+			"Principe : Diminuer les fibres végétales et résidus animaux pour réduire le volume des selles et le transit.",
+			"Aliments exclus : Légumes et fruits (crus et cuits), céréales complètes, viandes tendineuses, graisses cuites.",
+			"Éviter : Pommes de terre, pain blanc et lait (sauf préparation colique) pour limiter la fermentation et l'accélération du transit.",
+			"Durée avant coloscopie : 3 jours de régime sans résidus élargi (yaourts autorisés).",
+			"Durée avant chirurgie colique : 3-4 jours élargi puis 3 jours strict.",
+			"Après diverticulite/colite : 2-3 semaines strict puis 2 semaines élargi.",
+			"Réintroduction : Légumes pauvres en fibres (betteraves, carottes, courgettes pelées), compotes, laitages.",
+			"En dernier : Crudités et fruits pelés.",
+		],
+		"pdf": "",
+	},
 ]
 
 
