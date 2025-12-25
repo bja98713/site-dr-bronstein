@@ -1596,6 +1596,12 @@ def chatbot_api(request):
                 if question_meaningful_words:
                     coverage = len(meaningful_matches) / len(question_meaningful_words)
                     score += coverage * 5
+
+                # 4. Sequence Matcher (Sentence similarity)
+                # This helps when the user asks a question very similar to the FAQ title
+                seq_ratio = difflib.SequenceMatcher(None, normalize_text(user_message), question).ratio()
+                if seq_ratio > 0.5:
+                    score += seq_ratio * 20  # Big bonus for sentence similarity
                 
                 if score > max_score:
                     max_score = score
@@ -1621,7 +1627,8 @@ def chatbot_api(request):
                 'crohn', 'rch', 'rectocolite', 'hepatite', 'cirrhose', 'ulcere', 'polype', 'diverticule'
             }
             
-            if any(kw in user_message for kw in medical_keywords):
+            # Only suggest OpenEvidence if the FAQ match is not very strong
+            if any(kw in user_message for kw in medical_keywords) and max_score < 20:
                 response_data['suggest_openevidence'] = True
                 
             return JsonResponse(response_data)
