@@ -17,9 +17,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.i18n import i18n_patterns
+from django.http import HttpResponse
+
 from core import views as core_views
 
+def robots_txt(request):
+    content = """User-agent: *
+Disallow:
+
+Sitemap: https://www.docteur-bronstein-gastro.fr/sitemap.xml
+"""
+    return HttpResponse(content, content_type="text/plain")
+
 urlpatterns = [
+    path("robots.txt", robots_txt),
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
     path('api/chatbot/', core_views.chatbot_api, name='chatbot_api'),
