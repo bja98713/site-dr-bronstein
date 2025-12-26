@@ -23,7 +23,9 @@ from core import views as core_views
 
 def robots_txt(request):
     content = """User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /i18n/
+Disallow: /api/
 
 Sitemap: https://www.docteur-bronstein-gastro.fr/sitemap.xml
 """

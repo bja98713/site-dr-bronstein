@@ -22,7 +22,6 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'webapp-2886133.pythonanywhere.com',
-    'docteur-bronstein-gastro.fr',
     'www.docteur-bronstein-gastro.fr',
 ]
 
@@ -36,8 +35,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
     'core',
 ]
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
