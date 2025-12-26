@@ -23,7 +23,7 @@ from core import views as core_views
 
 from django.contrib.sitemaps.views import sitemap
 
-from bronstein_site.sitemaps import StaticViewSitemap
+from bronstein_site.sitemaps import StaticViewSitemap, ExamSitemap
 
 def robots_txt(request):
     content = """User-agent: *
@@ -37,6 +37,7 @@ Sitemap: https://www.docteur-bronstein-gastro.fr/sitemap.xml
 
 sitemaps = {
     "static": StaticViewSitemap,
+    "examens": ExamSitemap,
 }
 
 urlpatterns = [
