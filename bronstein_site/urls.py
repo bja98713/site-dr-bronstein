@@ -21,6 +21,10 @@ from django.http import HttpResponse
 
 from core import views as core_views
 
+from django.contrib.sitemaps.views import sitemap
+
+from bronstein_site.sitemaps import StaticViewSitemap
+
 def robots_txt(request):
     content = """User-agent: *
 Disallow: /admin/
@@ -31,14 +35,20 @@ Sitemap: https://www.docteur-bronstein-gastro.fr/sitemap.xml
 """
     return HttpResponse(content, content_type="text/plain")
 
+sitemaps = {
+    "static": StaticViewSitemap,
+}
+
 urlpatterns = [
     path("robots.txt", robots_txt),
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
     path('api/chatbot/', core_views.chatbot_api, name='chatbot_api'),
+    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
 ]
 
 urlpatterns += i18n_patterns(
     path('', include('core.urls')),
     prefix_default_language=False
 )
+
