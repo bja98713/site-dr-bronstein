@@ -1,9 +1,9 @@
 {% extends 'core/base.html' %}
-{% block title %}Actualités & conseils · Dr Bronstein{% endblock %}
+{% block title %}{{ tag.name_display }} · Blog medical{% endblock %}
 {% block content %}
 <section class="section">
-  <p class="eyebrow">Actualités</p>
-  <h1>Blog medical</h1>
+  <p class="eyebrow">Tag</p>
+  <h1>{{ tag.name_display }}</h1>
   <div class="grid cards">
     {% for post in posts %}
       <article class="card">
@@ -15,28 +15,15 @@
           {% if post.author_display %} · {{ post.author_display }}{% endif %}
         </p>
         <h3><a href="/blog/{{ post.slug }}/">{{ post.title_display }}</a></h3>
-        {% if post.categories.count %}
-          <p class="muted">
-            Categories:
-            {% for cat in post.categories.all %}
-              <a class="link" href="/blog/categorie/{{ cat.slug }}/">{{ cat.name_display }}</a>{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-          </p>
-        {% endif %}
-        {% if post.tags.count %}
-          <p class="muted">
-            Tags:
-            {% for tag in post.tags.all %}
-              <a class="link" href="/blog/tag/{{ tag.slug }}/">{{ tag.name_display }}</a>{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-          </p>
-        {% endif %}
         <p>{{ post.excerpt_display }}</p>
         <a class="link" href="/blog/{{ post.slug }}/">Lire l'article</a>
       </article>
     {% empty %}
-      <p>Pas d'articles pour le moment.</p>
+      <p>Pas d'articles pour ce tag.</p>
     {% endfor %}
+  </div>
+  <div style="margin-top: 16px;">
+    <a class="link" href="/blog/">Retour au blog</a>
   </div>
 </section>
 {% endblock %}

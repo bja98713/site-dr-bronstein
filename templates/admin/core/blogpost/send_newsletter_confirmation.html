@@ -1,0 +1,25 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block content %}
+  <div class="content">
+    <h1>{{ title }}</h1>
+    <p>Vous allez envoyer la newsletter pour les articles suivants :</p>
+    <ul>
+      {% for post in queryset %}
+        <li>{{ post }}</li>
+      {% endfor %}
+    </ul>
+    <form method="post">
+      {% csrf_token %}
+      {% for post in queryset %}
+        <input type="hidden" name="{{ action_checkbox_name }}" value="{{ post.pk }}">
+      {% endfor %}
+      <input type="hidden" name="action" value="{{ action }}">
+      <input type="hidden" name="select_across" value="0">
+      <input type="hidden" name="confirm" value="yes">
+      <button type="submit" class="button default">Confirmer l'envoi</button>
+      <a class="button cancel-link" href="{% url 'admin:core_blogpost_changelist' %}">Annuler</a>
+    </form>
+  </div>
+{% endblock %}

@@ -79,8 +79,6 @@
         {% csrf_token %}
         <input name="next" type="hidden" value="{{ request.path }}">
         <button type="submit" name="language" value="fr" title="Français" style="border:none; background:none; cursor:pointer; font-size: 1.2em; padding: 0;">🇫🇷</button>
-        <button type="submit" name="language" value="en" title="English" style="border:none; background:none; cursor:pointer; font-size: 1.2em; padding: 0;">🇬🇧</button>
-        <button type="submit" name="language" value="es" title="Español" style="border:none; background:none; cursor:pointer; font-size: 1.2em; padding: 0;">🇪🇸</button>
     </form>
     <a class="pill" href="tel:+68940814848">📞 Appeler pour RDV</a>
     <a class="pill" href="mailto:docteur@bronstein.fr">✉️ Envoyer un message</a>
@@ -97,13 +95,38 @@
       <a href="/pathologies/">Pathologies</a>
       <a href="/guides/">Guides</a>
       <a href="/faq/">FAQ</a>
-      <a href="/blog/">Actualités</a>
+      <details class="nav-item">
+        <summary class="nav-link">
+          Blog
+          {% if latest_blog_is_new %}<span class="nav-badge">Nouveau</span>{% endif %}
+        </summary>
+        <div class="nav-menu">
+          <ul>
+            <li><a href="/blog/">Liste des articles</a></li>
+            {% if latest_blog_post %}
+              <li><a href="/blog/{{ latest_blog_post.slug }}/">Detail d'un article</a></li>
+            {% else %}
+              <li><a href="/blog/">Detail d'un article</a></li>
+            {% endif %}
+            {% if request.user.is_staff %}
+              <li><a href="/admin/core/blogpost/add/">Creer un article</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </details>
       <a href="/contact/">Contact</a>
       <a class="nav-cta" href="/prendre-rendez-vous/">Prendre RDV</a>
     </nav>
   </header>
 
     <main>
+    {% if messages %}
+      <section class="section narrow">
+        {% for message in messages %}
+          <p class="muted">{{ message }}</p>
+        {% endfor %}
+      </section>
+    {% endif %}
     {% block content %}{% endblock %}
   </main>
 

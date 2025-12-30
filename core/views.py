@@ -1,14 +1,16 @@
 """Site pages for Dr Bronstein."""
 
 from django.http import Http404, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, get_language
 from django.views.decorators.csrf import csrf_exempt
+from django.core import signing
 import json
 import unicodedata
 import difflib
 from .forms import ContactForm
+from .models import BlogPost, BlogSubscriber, BlogCategory, BlogTag
 from .rag_utils import load_pdf_content
 
 
@@ -1231,6 +1233,7 @@ HOME_TILES = [
 
 
 def home(request):
+	blog_posts = BlogPost.objects.published().select_related("author")[:3]
 	context = {
 		"hero": {
 			"title": _("Je viens consulter, comment ça se passe ?"),
@@ -1240,7 +1243,7 @@ def home(request):
 		},
 		"tiles": HOME_TILES,
 		"specialties": EXAMS,
-		"blog_posts": BLOG_POSTS,
+		"blog_posts": blog_posts,
 		"contact": CONTACT,
 		"pathologies": PATHOLOGIES,
 		"guides": GUIDES,
@@ -1315,16 +1318,49 @@ def appointment(request):
 
 
 def blog_list(request):
-	return render(request, "core/blog_list.html", {"posts": BLOG_POSTS})
+	posts = BlogPost.objects.published().select_related("author").prefetch_related("categories", "tags")
+	return render(
+		request,
+		"core/blog_list.html",
+		{"posts": posts},
+	)
 
 
 def blog_detail(request, slug):
-	try:
-		post = next(p for p in BLOG_POSTS if p["slug"] == slug)
-	except StopIteration as exc:
-		raise Http404 from exc
+	post = get_object_or_404(
+		BlogPost.objects.published().select_related("author").prefetch_related("categories", "tags"),
+		slug=slug,
+	)
+	related = BlogPost.objects.published().exclude(pk=post.pk)[:4]
+	return render(request, "core/blog_detail.html", {"post": post, "posts": related})
 
-	return render(request, "core/blog_detail.html", {"post": post, "posts": BLOG_POSTS})
+
+def blog_category(request, slug):
+	category = get_object_or_404(BlogCategory, slug=slug)
+	posts = BlogPost.objects.published().filter(categories=category).select_related("author")
+	return render(request, "core/blog_category.html", {"category": category, "posts": posts})
+
+
+def blog_tag(request, slug):
+	tag = get_object_or_404(BlogTag, slug=slug)
+	posts = BlogPost.objects.published().filter(tags=tag).select_related("author")
+	return render(request, "core/blog_tag.html", {"tag": tag, "posts": posts})
+
+
+
+def blog_unsubscribe(request, token):
+	try:
+		email = signing.loads(token, salt="blog-subscriber")
+	except signing.BadSignature:
+		raise Http404
+
+	subscriber = get_object_or_404(BlogSubscriber, email=email)
+	status = "already"
+	if subscriber.is_active:
+		subscriber.is_active = False
+		subscriber.save(update_fields=["is_active"])
+		status = "unsubscribed"
+	return render(request, "core/blog_unsubscribe.html", {"status": status})
 
 
 def contact_view(request):
@@ -1798,8 +1834,22 @@ def chatbot_api(request):
                 ]
                 site_content.append({'type': 'guide', 'title': guide['title'], 'url': f"/guides/#{guide['slug']}", 'keywords': " ".join(keywords)})
             
-            for post in BLOG_POSTS:
-                site_content.append({'type': 'article', 'title': post['title'], 'url': f"/blog/{post['slug']}", 'keywords': post['title'] + " " + post.get('excerpt', '') + " " + post.get('content', '')})
+            for post in BlogPost.objects.published():
+                keywords = " ".join(
+                    [
+                        post.title_fr,
+                        post.excerpt_fr,
+                        post.content_fr,
+                    ]
+                )
+                site_content.append(
+                    {
+                        'type': 'article',
+                        'title': post.title_display,
+                        'url': post.get_absolute_url(),
+                        'keywords': keywords,
+                    }
+                )
 
             # Add PDF documents from RAG folder
             pdf_docs = load_pdf_content()
@@ -1864,4 +1914,3 @@ def chatbot_api(request):
             return JsonResponse({'response': "Une erreur est survenue."}, status=500)
     
     return JsonResponse({'error': 'Invalid request'}, status=400)
-

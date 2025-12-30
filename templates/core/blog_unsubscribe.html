@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+{% block title %}Desabonnement newsletter · Dr Bronstein{% endblock %}
+{% block content %}
+<section class="section narrow">
+  {% if status == "unsubscribed" %}
+    <h1>Desabonnement confirme</h1>
+    <p class="muted">Vous ne recevrez plus les emails du blog medical.</p>
+  {% else %}
+    <h1>Deja desabonne</h1>
+    <p class="muted">Votre adresse email ne recoit deja plus nos envois.</p>
+  {% endif %}
+  <div style="margin-top: 16px;">
+    <a class="link" href="/blog/">Retour au blog</a>
+  </div>
+</section>
+{% endblock %}

@@ -2,6 +2,7 @@ from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
 from core.views import EXAMS
+from core.models import BlogPost
 
 
 class StaticViewSitemap(Sitemap):
@@ -36,4 +37,18 @@ class ExamSitemap(Sitemap):
 
     def location(self, obj):
         return reverse("exam_detail", kwargs={"slug": obj["slug"]})
+
+
+class BlogPostSitemap(Sitemap):
+    changefreq = "monthly"
+    priority = 0.6
+
+    def items(self):
+        return BlogPost.objects.published()
+
+    def lastmod(self, obj):
+        return obj.published_at or obj.updated_at
+
+    def location(self, obj):
+        return obj.get_absolute_url()
  
